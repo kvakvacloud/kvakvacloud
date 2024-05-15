@@ -82,7 +82,7 @@ public static class JwtUtils {
                 return true;
             }
         }
-        catch (Exception exception)
+        catch (Exception)
         {
             return false;
         }
