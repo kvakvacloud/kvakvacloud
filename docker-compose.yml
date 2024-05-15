@@ -5,6 +5,29 @@ services:
             dockerfile: Dockerfile
         image: apigateway
         restart: always
+        networks:
+            - auth
+            - configuration
+    ConfigurationService:
+        build:
+            context: ./ConfigurationService/
+            dockerfile: Dockerfile
+        image: configurationservice
+        restart: always
+        networks:
+            - configuration
+            - configurationdb
+    ConfigurationServiceDB:
+        image: postgres:latest
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=postgres
+        networks:
+            - configurationdb
+        ports:
+            - "5433:5432" #remove in production
     AuthService:
         build:
             context: AuthService/
@@ -20,6 +43,9 @@ services:
             - DB_NAME=postgres
             - DB_USERNAME=postgres
             - DB_PASSWORD=postgres
+        networks:
+            - auth
+            - authdb
         ports:
             - "8080:8080"
     AuthServiceDB:
@@ -29,8 +55,17 @@ services:
             - POSTGRES_PASSWORD=postgres
             - POSTGRES_USER=postgres
             - POSTGRES_DB=postgres
-        expose: ["5432"]
+        networks:
+            - authdb
         ports:
             - "5432:5432" #remove in production
 
-
+networks:
+    auth:
+        name: auth
+    authdb:
+        name: authdb
+    configuration:
+        name: configuration
+    configurationdb:
+        name: configurationdb
