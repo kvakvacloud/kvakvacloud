@@ -5,9 +5,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace AuthService.Middleware;
+namespace AuthService.Utils;
 
-public static class JwtMiddleware {
+public static class JwtUtils {
 
     static readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
     static readonly int expireMinutes = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "5");
@@ -87,5 +87,6 @@ public static class JwtMiddleware {
             return false;
         }
     }
+
 
 }
