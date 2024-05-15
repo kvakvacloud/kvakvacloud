@@ -1,0 +1,36 @@
+services:
+    APIGateway:
+        build:
+            context: ./APIGateway/
+            dockerfile: Dockerfile
+        image: apigateway
+        restart: always
+    AuthService:
+        build:
+            context: AuthService/
+            dockerfile: Dockerfile
+        image: authservice
+        restart: always
+        links:
+            - AuthServiceDB:database
+            - APIGateway:api
+        environment:
+            - DB_HOSTNAME=localhost
+            - DB_PORT=5432
+            - DB_NAME=postgres
+            - DB_USERNAME=postgres
+            - DB_PASSWORD=postgres
+        ports:
+            - "8080:8080"
+    AuthServiceDB:
+        image: postgres:latest
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=postgres
+        expose: ["5432"]
+        ports:
+            - "5432:5432" #remove in production
+
+
