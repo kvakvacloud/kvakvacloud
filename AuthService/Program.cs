@@ -1,5 +1,4 @@
 using AuthService.Controller;
-using AuthService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();

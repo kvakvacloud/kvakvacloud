@@ -1,4 +1,3 @@
-using AuthService.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
