@@ -8,7 +8,7 @@ public class Ban {
     public int Id {get;set;}
     [NotNull]
     public int UserId {get;set;}
-    public User? User {get;set;}
+    public required User User {get;set;}
     [NotNull]
     public DateTime When {get;set;}
     public DateTime Until {get;set;}

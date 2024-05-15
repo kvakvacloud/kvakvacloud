@@ -9,7 +9,7 @@ public class RevokedPassword {
     public int Id {get;set;}
     [NotNull]
     public int UserId {get;set;}
-    public User? User {get;set;}
+    public required User User {get;set;}
     [NotNull]
     public string? Password {get;set;}
 }

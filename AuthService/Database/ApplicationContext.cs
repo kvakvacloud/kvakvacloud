@@ -15,7 +15,7 @@ public class ApplicationContext : DbContext
 	
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var Hostname=Environment.GetEnvironmentVariable("DB_HOSTNAME") ?? "localhost";
+        var Hostname=Environment.GetEnvironmentVariable("DB_HOSTNAME") ?? "authdb";
         var Port=Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
         var Name=Environment.GetEnvironmentVariable("DB_NAME") ?? "postgres";
         var Username=Environment.GetEnvironmentVariable("DB_USERNAME") ?? "postgres";

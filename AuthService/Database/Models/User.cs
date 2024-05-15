@@ -9,15 +9,16 @@ namespace AuthService.Database.Models;
 public class User {
     [Key]
     public int Id {get;set;}
-    public string? Username {get;set;}
+    [NotNull]
+    public required string Username {get;set;}
     [EmailAddress]
     public string? Email {get;set;}
     [NotNull] [MinLength(8)]
-    public string? Password {get;set;}
+    public required string Password {get;set;}
     [NotNull]
     public DateTime RegisrationDate {get;set;}
     [NotNull]
     public DateTime PasswordChangeDate {get;set;}
-    public bool IsSuperuser {get;set;}
+    public bool IsSuper {get;set;}
     public bool ForcePasswordChange {get;set;}
 }
