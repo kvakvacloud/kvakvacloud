@@ -21,9 +21,17 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddControllers();
 
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 app.UseRouting();
 app.MapControllers();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample API");
+});
 
 app.Run();

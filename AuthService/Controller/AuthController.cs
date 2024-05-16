@@ -30,6 +30,21 @@ public class AuthController : ControllerBase {
         return new StatusCodeResult(501);
     }   
 
+    [Route("activate")]
+    [HttpPost]
+    public IActionResult Activate()
+    {
+        return new StatusCodeResult(501);
+    }
+
+    [Route("reset")]
+    [HttpPost]
+    public IActionResult Reset()
+    {
+        return new StatusCodeResult(501);
+    }
+
+
     [Route("login")]
     [HttpPost]
     public IActionResult Login()
