@@ -18,7 +18,7 @@ public class AuthController : ControllerBase {
 
     [Route("register")]
     [HttpPost]
-    public IActionResult Register([FromBody] AccountRegisterModel model)
+    public IActionResult Register([FromQuery] AccountRegisterModel model)
     {
         if (!ModelState.IsValid || model.Email == null || model.Password == null)
         {

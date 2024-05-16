@@ -4,7 +4,7 @@ namespace AuthService.Model;
 
 public class AccountRegisterModel
 {
-    [Required]
+    [Required] [EmailAddress]
     public string? Email {get;set;}
 
     [Required] [MinLength(8)]
