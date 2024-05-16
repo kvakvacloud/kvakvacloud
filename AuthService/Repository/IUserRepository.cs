@@ -5,12 +5,12 @@ namespace AuthService.Repository;
 
 public interface IUserRepository
 {
-    IQueryable<User> GetUsers();
-    User? GetUserById(int id);
-    User? GetUserByUsername(string username);
-    User? GetUserByEmail(string email);
-    bool CreateUser(User user);
-    bool UpdateUser(User user);
-    bool DeleteUser(User user);
-    bool Save();
+    public IQueryable<User> GetUsers();
+    public User? GetUserById(int id);
+    public User? GetUserByUsername(string username);
+    public User? GetUserByEmail(string email);
+    public bool CreateUser(User user);
+    public bool UpdateUser(User user);
+    public bool DeleteUser(User user);
+    public bool Save();
 }

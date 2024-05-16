@@ -7,9 +7,10 @@ namespace AuthService.Database.Models;
 public class RevokedPassword {
     [Key]
     public int Id {get;set;}
-    [NotNull]
+    [Required]
     public int UserId {get;set;}
+    [Required]
     public required User User {get;set;}
-    [NotNull]
+    [Required]
     public string? Password {get;set;}
 }

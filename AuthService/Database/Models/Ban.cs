@@ -6,10 +6,11 @@ namespace AuthService.Database.Models;
 public class Ban {
     [Key]
     public int Id {get;set;}
-    [NotNull]
+    [Required]
     public int UserId {get;set;}
-    public required User User {get;set;}
-    [NotNull]
+    [Required]
+    public User? User {get;set;}
+    [Required]
     public DateTime When {get;set;}
     public DateTime Until {get;set;}
     public string? Reason {get;set;}

@@ -7,9 +7,11 @@ public class ApplicationContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Ban> Bans { get; set; }
     public DbSet<RevokedPassword> RevokedPasswords { get; set; }
+    public DbSet<RegistrationCode> RegistrationCodes { get; set; }
+    public DbSet<ResetCode> ResetCodes { get; set; }
 
     #pragma warning disable CS8618
-    public ApplicationContext()
+    public ApplicationContext(DbContextOptions<ApplicationContext> options)
     {
         Database.EnsureCreated();
     }

@@ -1,3 +1,5 @@
+using AuthService.Model;
+using AuthService.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -7,44 +9,52 @@ namespace AuthService.Controller;
 [Route("[controller]")]
 public class AuthController : ControllerBase {
 
+    private readonly AccountService _accservice;
 
-    public AuthController()
+    public AuthController(AccountService accountService)
     {
-        
+        _accservice = accountService;
     }
 
     [Route("register")]
     [HttpPost]
-    public HttpResponseMessage Register(HttpContext context)
+    public IActionResult Register([FromBody] AccountRegisterModel model)
     {
-        return new HttpResponseMessage(HttpStatusCode.NotImplemented);
+        if (!ModelState.IsValid || model.Email == null || model.Password == null)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = _accservice.Register(model.Email, model.Password);
+
+        return new StatusCodeResult(501);
     }   
 
     [Route("login")]
     [HttpPost]
-    public HttpResponseMessage Login()
+    public IActionResult Login()
     {
-        return new HttpResponseMessage(HttpStatusCode.NotImplemented);
+        return new StatusCodeResult(501);
     }
 
     [Route("forgotPassword")]
     [HttpPost]
-    public HttpResponseMessage ForgotPassword()
+    public IActionResult ForgotPassword()
     {
-        return new HttpResponseMessage(HttpStatusCode.NotImplemented);
+        return new StatusCodeResult(501);
     }
 
     [Route("changePassword")]
     [HttpPut]
-    public HttpResponseMessage ChangePassword()
+    public IActionResult ChangePassword()
     {
-        return new HttpResponseMessage(HttpStatusCode.NotImplemented);
+        return new StatusCodeResult(501);
     }
 
     [Route("refreshToken")]
     [HttpPost]
-    public HttpResponseMessage RefreshToken()
+    public IActionResult RefreshToken()
     {
-        return new HttpResponseMessage(HttpStatusCode.NotImplemented);
+        return new StatusCodeResult(501);
     }
 }

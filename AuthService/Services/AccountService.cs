@@ -1,26 +1,29 @@
 using AuthService.Database.Models;
+using AuthService.Enums;
 using AuthService.Repository;
 
 namespace AuthService.Services;
 
-public class AuthService : IAuthService
+public class AccountService : IAccountService
 {
     private readonly IUserRepository _userRepo;
 
-    public AuthService(IUserRepository userRepo)
+    public AccountService(IUserRepository userRepo)
     {
         _userRepo = userRepo;
     }
 
-    public bool Register(string email, string password)
+    public RegistrationResult Register(string email, string password)
     {
         User? user = _userRepo.GetUserByEmail(email);
 
-        //User already exists, pretend to register
-        if (user != null) return true;
+        // Registration is disabled in server settings
+        // if (false) return RegistrationResult.Forbidden;
 
+        // User already exists, pretend to register
+        if (user != null) return RegistrationResult.EmailSent;
         
-        return false; //todo
+        return RegistrationResult.NotImplemented;
     }
 
     public bool Login(string username, string password)

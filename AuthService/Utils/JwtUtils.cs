@@ -4,13 +4,21 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AuthService.Repository;
 
 namespace AuthService.Utils;
 
-public static class JwtUtils {
+public class JwtUtils {
+
+    private readonly UserRepository _userRepo;
 
     static readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
     static readonly int expireMinutes = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "5");
+
+    public JwtUtils(UserRepository userRepo)
+    {
+        _userRepo = userRepo;
+    }
 
     private static string GenerateTempSecret()
     {
@@ -26,7 +34,7 @@ public static class JwtUtils {
         return secretKey;
     }
 
-    public static string GenerateJwtToken(User user)
+    public string GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         byte[] key = Encoding.ASCII.GetBytes(secret);
@@ -48,7 +56,7 @@ public static class JwtUtils {
         return tokenHandler.WriteToken(jwtToken);
     }
 
-    public static bool ValidateJwtToken(string jwt)
+    public bool ValidateJwtToken(string jwt)
     {
         try 
         {
@@ -66,12 +74,10 @@ public static class JwtUtils {
             tokenHandler.ValidateToken(jwt, validationParameters, out SecurityToken validatedToken);
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
-            long userId = long.Parse(validatedJwt.Claims.First(claim => claim.Type == "UserId").Value);
+            int userId = int.Parse(validatedJwt.Claims.First(claim => claim.Type == "UserId").Value);
             DateTime PasswordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "passwordChangeDate").Value);
 
-            using ApplicationContext ctx = new();
-
-            User? user = ctx.Users.FirstOrDefault(u => u.Id == userId);
+            User? user = _userRepo.GetUserById(userId);
             if (user == null || PasswordChangeDate < user.PasswordChangeDate)
             {
                 return false;
