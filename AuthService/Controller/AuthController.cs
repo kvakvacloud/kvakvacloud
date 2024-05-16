@@ -7,12 +7,18 @@ namespace AuthService.Controller;
 [Route("[controller]")]
 public class AuthController : ControllerBase {
 
+
+    public AuthController()
+    {
+        
+    }
+
     [Route("register")]
     [HttpPost]
     public HttpResponseMessage Register(HttpContext context)
     {
         return new HttpResponseMessage(HttpStatusCode.NotImplemented);
-    }
+    }   
 
     [Route("login")]
     [HttpPost]
