@@ -11,7 +11,7 @@ public class ApplicationContext : DbContext
     public DbSet<ResetCode> ResetCodes { get; set; }
 
     #pragma warning disable CS8618
-    public ApplicationContext(DbContextOptions<ApplicationContext> options)
+    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
         Database.EnsureCreated();
     }
