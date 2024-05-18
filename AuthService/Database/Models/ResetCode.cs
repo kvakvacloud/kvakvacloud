@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AuthService.Validation.Attributes;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Database.Models;
@@ -9,6 +10,7 @@ public class ResetCode
     [Key]
     public int Id {get;set;}
     [Required]
+    [ValidGuid]
     public Guid Code {get;set;}
     [Required]
     public int UserId {get;set;}

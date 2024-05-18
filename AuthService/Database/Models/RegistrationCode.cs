@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using AuthService.Validation.Attributes;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Database.Models;
@@ -10,6 +11,7 @@ public class RegistrationCode
     [Key]
     public int Id {get;set;}
     [Required]
+    [ValidGuid]
     public Guid Code {get;set;}
     [Required]
     [EmailAddress]

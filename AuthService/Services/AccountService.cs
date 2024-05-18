@@ -41,9 +41,9 @@ public class AccountService : IAccountService
         return new ApiResponse{Code=200};
     }
 
-    public ApiResponse ValidateRegCode(string code)
+    public ApiResponse ValidateRegCode(AccountRegCodeModel model)
     {
-        RegistrationCode? regcode = _regcodeRepo.GetRegistrationCodeByCode(new Guid(code));
+        RegistrationCode? regcode = _regcodeRepo.GetRegistrationCodeByCode(new Guid(model.Code));
 
         if (regcode == null || regcode.Used || regcode.ValidUntil < DateTime.UtcNow)
         {
@@ -61,7 +61,7 @@ public class AccountService : IAccountService
 
         if (regcode == null || regcode.Used || regcode.ValidUntil < DateTime.UtcNow)
         {
-            return new ApiResponse{Code=401};
+            return new ApiResponse{Code=401, Payload=new{Message="Specified registration code is invalid or expired."}};
         }
 
         User? existingUser = _userRepo.GetUserByUsername(regform.Username);
