@@ -1,8 +1,10 @@
+using System.Reflection;
 using AuthService.Database;
 using AuthService.Repository;
 using AuthService.Services;
 using AuthService.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -23,7 +25,26 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddControllers();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+  {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "KvaKvaCloud AuthService API",
+        Contact = new OpenApiContact
+        {
+            Name = "Nikolai Papin",
+            Email = "nikolai@weirdcat.ru"
+        },
+    });
+
+    var xmlFile = Path.Combine(AppContext.BaseDirectory, "TestAPI.xml");
+    if (File.Exists(xmlFile))
+    {
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    }
+ });
 
 var app = builder.Build();
 

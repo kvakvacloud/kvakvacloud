@@ -10,5 +10,5 @@ public interface IAccountService
     ApiResponse ValidateRegCode(string code);
     ApiResponse Login(string username, string password);
     ApiResponse RequestPasswordReset(string email);
-    ApiResponse ResetPassword(string code, string newPassword);
+    ApiResponse ResetPassword(AccountPasswordResetModel model);
 }

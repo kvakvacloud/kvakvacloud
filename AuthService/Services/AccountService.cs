@@ -110,7 +110,7 @@ public class AccountService : IAccountService
         return new ApiResponse{Code=501};; //todo
     }
 
-    public ApiResponse ResetPassword(string code, string newPassword)
+    public ApiResponse ResetPassword(AccountPasswordResetModel model)
     {  
         return new ApiResponse{Code=501};; //todo
     }

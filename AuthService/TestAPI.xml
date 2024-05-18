@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AuthService</name>
+    </assembly>
+    <members>
+        <member name="M:AuthService.Controller.AuthController.Register(AuthService.Model.AccountRegisterModel)">
+            <summary>
+            Запросить регистрацию по данному Email.
+            </summary>
+            <response code="200">Код отправлен на почту, если она не зарегистрирована.</response>
+        </member>
+        <member name="M:AuthService.Controller.AuthController.ValidateRegCode(AuthService.Model.AccountRegCodeModel)">
+            <summary>
+            Проверить, что код регистрации валиден.
+            </summary>
+            <response code="200">Код валиден.</response>
+            <response code="404">Код не существует или его срок действия истек.</response>
+        </member>
+    </members>
+</doc>
