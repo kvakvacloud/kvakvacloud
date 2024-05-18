@@ -20,16 +20,27 @@ public class AuthController : ControllerBase {
     [HttpPost]
     public IActionResult Register([FromQuery] AccountRegisterModel model)
     {
-        var result = _accservice.Register(model.Email, model.Password);
+        var result = _accservice.Register(model.Email);
 
         return StatusCode(result.Code, result.Payload);
     }   
 
+    [Route("validateRegCode")]
+    [HttpGet]
+    public IActionResult ValidateRegCode([FromQuery] AccountRegCodeModel model)
+    {
+        var result = _accservice.ValidateRegCode(model.Code);
+
+        return StatusCode(result.Code, result.Payload);
+    }
+
     [Route("activate")]
     [HttpPost]
-    public IActionResult Activate()
+    public IActionResult Activate([FromQuery] AccountRegFormModel model)
     {
-        return new StatusCodeResult(501);
+        var result = _accservice.Activate(model);
+
+        return StatusCode(result.Code, result.Payload);
     }
 
     [Route("reset")]
@@ -44,7 +55,7 @@ public class AuthController : ControllerBase {
     [HttpPost]
     public IActionResult Login(AccountLoginModel model)
     {
-        var result = _accservice.Register(model.Username, model.Password);
+        var result = _accservice.Login(model.Username, model.Password);
 
         return StatusCode(result.Code, result.Payload);
     }

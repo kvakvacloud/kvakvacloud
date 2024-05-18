@@ -14,5 +14,5 @@ public class Ban {
     public DateTime When {get;set;}
     public DateTime Until {get;set;}
     public string? Reason {get;set;}
-    public bool Resolvable {get;set;}
+    public bool Resolvable {get;set;}=false;
 }

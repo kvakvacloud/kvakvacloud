@@ -20,6 +20,6 @@ public class User {
     public DateTime RegistrationDate {get;set;}
     [Required]
     public DateTime PasswordChangeDate {get;set;}
-    public bool? IsSuper {get;set;}
-    public bool? ForcePasswordChange {get;set;}
+    public bool? IsSuper {get;set;}=false;
+    public bool? ForcePasswordChange {get;set;}=false;
 }

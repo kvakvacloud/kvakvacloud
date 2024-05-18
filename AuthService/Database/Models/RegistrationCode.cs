@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Database.Models;
@@ -11,11 +12,10 @@ public class RegistrationCode
     [Required]
     public Guid Code {get;set;}
     [Required]
-    public int UserId {get;set;}
-    [Required]
-    public User User {get;set;}
+    [EmailAddress]
+    public string Email {get;set;}
     [Required]
     public DateTime ValidUntil {get;set;}
-    public bool? Used {get;set;}
-    public DateTime? WhenWasUsed {get;set;}
+    public bool Used {get;set;} = false;
+    public DateTime WhenWasUsed {get;set;}
 }

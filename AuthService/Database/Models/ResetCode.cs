@@ -16,6 +16,6 @@ public class ResetCode
     public User User {get;set;}
     [Required]
     public DateTime ValidUntil {get;set;}
-    public bool? Used {get;set;}
+    public bool Used {get;set;}=false;
     public DateTime? WhenWasUsed {get;set;}
 }

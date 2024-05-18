@@ -18,10 +18,6 @@ public class RegistrationCodeRepository : IRegistrationCodeRepository
     {
         return _db.RegistrationCodes.FirstOrDefault(rc => rc.Id == id);
     }
-    public RegistrationCode? GetRegistrationCodeByUserId(int userid)
-    {
-        return _db.RegistrationCodes.FirstOrDefault(rc => rc.UserId == userid);
-    }
     public RegistrationCode? GetRegistrationCodeByCode(Guid code)
     {
         return _db.RegistrationCodes.FirstOrDefault(rc => rc.Code == code);

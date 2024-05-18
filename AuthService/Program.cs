@@ -1,6 +1,7 @@
 using AuthService.Database;
 using AuthService.Repository;
 using AuthService.Services;
+using AuthService.Utils;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRegistrationCodeRepository, RegistrationCodeRepository>();
+builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddControllers();

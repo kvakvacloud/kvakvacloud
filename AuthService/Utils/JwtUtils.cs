@@ -7,14 +7,14 @@ using AuthService.Repository;
 
 namespace AuthService.Utils;
 
-public class JwtUtils {
+public class JwtUtils : IJwtUtils {
 
-    private readonly UserRepository _userRepo;
+    private readonly IUserRepository _userRepo;
 
-    static readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
-    static readonly int expireMinutes = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "5");
+    private readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
+    private readonly int expireMinutes = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "5");
 
-    public JwtUtils(UserRepository userRepo)
+    public JwtUtils(IUserRepository userRepo)
     {
         _userRepo = userRepo;
     }
@@ -40,6 +40,7 @@ public class JwtUtils {
 
         List<Claim> claims = [
             new Claim("UserId", user.Id.ToString()),
+            new Claim("Username", user.Username),
             new Claim("IsSuper", (user.IsSuper ?? false).ToString()),
             new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString())
         ];
@@ -74,7 +75,7 @@ public class JwtUtils {
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
             int userId = int.Parse(validatedJwt.Claims.First(claim => claim.Type == "UserId").Value);
-            DateTime PasswordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "passwordChangeDate").Value);
+            DateTime PasswordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
             User? user = _userRepo.GetUserById(userId);
             if (user == null || PasswordChangeDate < user.PasswordChangeDate)
