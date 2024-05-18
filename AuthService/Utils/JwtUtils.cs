@@ -90,6 +90,12 @@ public class JwtUtils : IJwtUtils {
             tokenHandler.ValidateToken(jwt, validationParameters, out SecurityToken validatedToken);
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
+            //Lighter check for access tokens
+            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value == "access")
+            {
+                return true;
+            }
+
             int userId = int.Parse(validatedJwt.Claims.First(claim => claim.Type == "UserId").Value);
             DateTime PasswordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
