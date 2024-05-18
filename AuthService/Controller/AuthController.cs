@@ -1,4 +1,5 @@
 using AuthService.Model;
+using AuthService.Responses;
 using AuthService.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -66,6 +67,7 @@ public class AuthController : ControllerBase {
     public IActionResult ForgotPassword(AccountForgotPasswordModel model)
     {
         var result = _accservice.RequestPasswordReset(model.Email);
+
         return StatusCode(result.Code, result.Payload);
     }
 
@@ -82,7 +84,11 @@ public class AuthController : ControllerBase {
         return new StatusCodeResult(501);
     }
 
-
+    /// <summary>
+    /// Вход в аккаунт с использованием username и пароля.
+    /// </summary>
+    /// <response code="200">Получен токен</response>
+    [ProducesResponseType(typeof(TokenResponse), (int)HttpStatusCode.OK)]
     [Route("login")]
     [HttpPost]
     public IActionResult Login(AccountLoginModel model)
@@ -94,9 +100,11 @@ public class AuthController : ControllerBase {
 
     [Route("changePassword")]
     [HttpPut]
-    public IActionResult ChangePassword()
+    public IActionResult ChangePassword(AccountChangePasswordModel model)
     {
-        return new StatusCodeResult(501);
+        var result = _accservice.ChangePassword(model);
+
+        return StatusCode(result.Code, result.Payload);
     }
 
     [Route("refreshToken")]

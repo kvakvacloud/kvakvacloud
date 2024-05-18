@@ -105,13 +105,45 @@ public class AccountService : IAccountService
         return new ApiResponse {Code=200, Payload=new{Token=token}};
     }
 
+    public ApiResponse ChangePassword(AccountChangePasswordModel model)
+    {
+        if (!_jwtUtils.ValidateJwtToken(model.Token))
+        {
+            return new ApiResponse{Code=401};
+        }
+        User? user = _userRepo.GetUserByUsername(_jwtUtils.JwtTokenClaims(model.Token).First(c => c.Type == "Username").Value);
+
+        if (user == null)
+        {
+            return new ApiResponse{Code=500, Payload=new{Message="Unexpected token problem"}};
+        }
+
+        if (!BcryptUtils.VerifyPassword(model.OldPassword, user.Password))
+        {
+            return new ApiResponse{Code=401, Payload=new{Message="Invalid old password"}};
+        }
+
+        user.Password = BcryptUtils.HashPassword(model.NewPassword);
+        user.PasswordChangeDate = DateTime.UtcNow;
+        user.ForcePasswordChange = false;
+
+        bool isSuccess = _userRepo.UpdateUser(user);
+
+        if (!isSuccess)
+        {
+            return new ApiResponse{Code=500, Payload=new{Message="Failed to update user data"}};
+        }
+
+        return new ApiResponse{Code=200}; //todo 
+    }
+
     public ApiResponse RequestPasswordReset(string email)
     {
-        return new ApiResponse{Code=501};; //todo
+        return new ApiResponse{Code=501}; //todo
     }
 
     public ApiResponse ResetPassword(AccountPasswordResetModel model)
     {  
-        return new ApiResponse{Code=501};; //todo
+        return new ApiResponse{Code=501}; //todo
     }
 }

@@ -33,6 +33,20 @@ public class JwtUtils : IJwtUtils {
         return secretKey;
     }
 
+    public JwtSecurityToken StringToJwtToken(string jwt)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var token = handler.ReadJwtToken(jwt);
+        
+        return token;
+    }
+
+    public IEnumerable<Claim> JwtTokenClaims(string jwt)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        return handler.ReadJwtToken(jwt).Claims;
+    }
+
     public string GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();

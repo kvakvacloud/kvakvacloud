@@ -9,6 +9,7 @@ public interface IAccountService
     ApiResponse Activate(AccountRegFormModel regform);
     ApiResponse ValidateRegCode(string code);
     ApiResponse Login(string username, string password);
+    ApiResponse ChangePassword(AccountChangePasswordModel model);
     ApiResponse RequestPasswordReset(string email);
     ApiResponse ResetPassword(AccountPasswordResetModel model);
 }

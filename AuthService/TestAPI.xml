@@ -17,5 +17,30 @@
             <response code="200">Код валиден.</response>
             <response code="404">Код не существует или его срок действия истек.</response>
         </member>
+        <member name="M:AuthService.Controller.AuthController.Activate(AuthService.Model.AccountRegFormModel)">
+            <summary>
+            Предоставить код активации аккаунта, заполнить форму и завершить регистрацию
+            </summary>
+            <response code="200">Регистрация успешна.</response>
+            <response code="401">Действие кода истекло или код не существует.</response>
+        </member>
+        <member name="M:AuthService.Controller.AuthController.ForgotPassword(AuthService.Model.AccountForgotPasswordModel)">
+            <summary>
+            Запрос на сброс пароля для аккаунта с указанной почтой. 
+            </summary>
+            <response code="200">Запрос отправлен на почту, если она зарегистрирована.</response>
+        </member>
+        <member name="M:AuthService.Controller.AuthController.ResetPassword(AuthService.Model.AccountPasswordResetModel)">
+            <summary>
+            Сброс пароля аккаунта при помощи кода восстановления.
+            </summary>
+            <response code="200">Пароль успешно изменен.</response>
+        </member>
+        <member name="M:AuthService.Controller.AuthController.Login(AuthService.Model.AccountLoginModel)">
+            <summary>
+            Вход в аккаунт с использованием username и пароля.
+            </summary>
+            <response code="200">Получен токен</response>
+        </member>
     </members>
 </doc>
