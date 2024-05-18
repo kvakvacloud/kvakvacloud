@@ -98,8 +98,14 @@ public class AuthController : ControllerBase {
         return StatusCode(result.Code, result.Payload);
     }
 
+    /// <summary>
+    /// Изменить пароль аккаунта.
+    /// </summary>
+    /// <response code="200">Получен токен</response>
+    /// <response code="401">Неверный старый пароль или неверный токен</response>
     [Route("changePassword")]
     [HttpPut]
+    [ProducesResponseType(typeof(TokenResponse), (int)HttpStatusCode.OK)]
     public IActionResult ChangePassword(AccountChangePasswordModel model)
     {
         var result = _accservice.ChangePassword(model);
@@ -107,10 +113,10 @@ public class AuthController : ControllerBase {
         return StatusCode(result.Code, result.Payload);
     }
 
-    [Route("refreshToken")]
-    [HttpPost]
-    public IActionResult RefreshToken()
-    {
-        return new StatusCodeResult(501);
-    }
+    // [Route("refreshToken")]
+    // [HttpPost]
+    // public IActionResult RefreshToken()
+    // {
+        // return new StatusCodeResult(501);
+    // }
 }
