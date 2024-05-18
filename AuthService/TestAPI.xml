@@ -42,5 +42,12 @@
             </summary>
             <response code="200">Получен токен</response>
         </member>
+        <member name="M:AuthService.Controller.AuthController.ChangePassword(AuthService.Model.AccountChangePasswordModel)">
+            <summary>
+            Изменить пароль аккаунта.
+            </summary>
+            <response code="200">Получен токен</response>
+            <response code="401">Неверный старый пароль или неверный токен</response>
+        </member>
     </members>
 </doc>

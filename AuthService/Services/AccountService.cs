@@ -30,7 +30,7 @@ public class AccountService : IAccountService
         if (existingUser != null) return new ApiResponse{Code=200};
 
         RegistrationCode newRegistrationCode = new() {
-            Code=new Guid(),
+            Code=Guid.NewGuid(),
             Email=email,
             ValidUntil=DateTime.UtcNow.AddDays(1),
             Used=false
