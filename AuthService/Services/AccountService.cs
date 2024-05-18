@@ -47,7 +47,7 @@ public class AccountService : IAccountService
 
         if (regcode == null || regcode.Used || regcode.ValidUntil < DateTime.UtcNow)
         {
-            return new ApiResponse{Code=200, Payload=new{isValid=false}};
+            return new ApiResponse{Code=404, Payload=new{isValid=false}};
         }
         else
         {

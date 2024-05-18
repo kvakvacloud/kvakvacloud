@@ -147,6 +147,7 @@ public class AuthController : ControllerBase {
     /// <response code="200">Получены токены</response>
     [Route("refreshToken")]
     [HttpPost]
+    [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     public IActionResult RefreshToken(AccountRefreshTokenModel model)
     {
         if (!ModelState.IsValid)
