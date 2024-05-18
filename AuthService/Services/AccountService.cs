@@ -1,6 +1,7 @@
 using AuthService.Database.Models;
-using AuthService.Enums;
 using AuthService.Repository;
+using AuthService.Responses;
+using AuthService.Utils;
 
 namespace AuthService.Services;
 
@@ -13,7 +14,7 @@ public class AccountService : IAccountService
         _userRepo = userRepo;
     }
 
-    public RegistrationResult Register(string email, string password)
+    public ApiResponse Register(string email, string password)
     {
         User? user = _userRepo.GetUserByEmail(email);
 
@@ -21,23 +22,30 @@ public class AccountService : IAccountService
         // if (false) return RegistrationResult.Forbidden;
 
         // User already exists, pretend to register
-        if (user != null) return RegistrationResult.EmailSent;
-        
-        return RegistrationResult.NotImplemented;
+        if (user != null) return new ApiResponse{Code=501};
+
+        return new ApiResponse{Code=501}; //Not implemented
     }
 
-    public bool Login(string username, string password)
+    public ApiResponse Login(string username, string password)
     {
-        return false; //todo
+        User? user = _userRepo.GetUserByUsername(username);
+
+        if (user == null || BcryptUtils.VerifyPassword(password, user.Password ?? ""))
+        {
+            return new ApiResponse{Code=401};
+        }
+
+        return new ApiResponse {Code=501, Payload=new{token="123-123-123-123"}};
     }
 
-    public bool RequestPasswordReset(string email)
+    public ApiResponse RequestPasswordReset(string email)
     {
-        return false; //todo
+        return new ApiResponse{Code=501};; //todo
     }
 
-    public bool ResetPassword(string code, string newPassword)
+    public ApiResponse ResetPassword(string code, string newPassword)
     {  
-        return false; //todo
+        return new ApiResponse{Code=501};; //todo
     }
 }

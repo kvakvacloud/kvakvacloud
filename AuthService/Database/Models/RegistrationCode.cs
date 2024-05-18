@@ -13,9 +13,9 @@ public class RegistrationCode
     [Required]
     public int UserId {get;set;}
     [Required]
-    public User? User {get;set;}
+    public User User {get;set;}
     [Required]
     public DateTime ValidUntil {get;set;}
-    public bool Used {get;set;}
-    public DateTime WhenWasUsed {get;set;}
+    public bool? Used {get;set;}
+    public DateTime? WhenWasUsed {get;set;}
 }

@@ -1,5 +1,4 @@
 using AuthService.Database.Models;
-using AuthService.Database;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -25,7 +24,7 @@ public class JwtUtils {
         Console.WriteLine("Warning: no Jwt secret is specified, using a random secret instead. "+
         "To prevent token invalidation on restart, specify a secret via AUTH_JWT_SECRET variable for AuthService.");
         byte[] data = new byte[32];
-        Random random = new Random();
+        Random random = new();
         random.NextBytes(data);
 
         // Convert the byte array to a string
@@ -41,7 +40,7 @@ public class JwtUtils {
 
         List<Claim> claims = [
             new Claim("UserId", user.Id.ToString()),
-            new Claim("IsSuper", user.IsSuper.ToString()),
+            new Claim("IsSuper", (user.IsSuper ?? false).ToString()),
             new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString())
         ];
 

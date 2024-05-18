@@ -1,11 +1,11 @@
-using AuthService.Enums;
+using AuthService.Responses;
 
 namespace AuthService.Services;
 
 public interface IAccountService
 {
-    RegistrationResult Register(string email, string password);
-    bool Login(string username, string password);
-    bool RequestPasswordReset(string email);
-    bool ResetPassword(string code, string newPassword);
+    ApiResponse Register(string email, string password);
+    ApiResponse Login(string username, string password);
+    ApiResponse RequestPasswordReset(string email);
+    ApiResponse ResetPassword(string code, string newPassword);
 }

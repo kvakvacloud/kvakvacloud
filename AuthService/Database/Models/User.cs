@@ -10,15 +10,16 @@ public class User {
     [Key]
     public int Id {get;set;}
     [Required]
-    public string? Username {get;set;}
+    public string Username {get;set;}
     [EmailAddress]
-    public string? Email {get;set;}
-    [Required] [MinLength(8)]
-    public string? Password {get;set;}
+    public string Email {get;set;}
     [Required]
-    public DateTime RegisrationDate {get;set;}
+    [MinLength(8)]
+    public string Password {get;set;}
+    [Required]
+    public DateTime RegistrationDate {get;set;}
     [Required]
     public DateTime PasswordChangeDate {get;set;}
-    public bool IsSuper {get;set;}
-    public bool ForcePasswordChange {get;set;}
+    public bool? IsSuper {get;set;}
+    public bool? ForcePasswordChange {get;set;}
 }

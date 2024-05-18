@@ -20,14 +20,9 @@ public class AuthController : ControllerBase {
     [HttpPost]
     public IActionResult Register([FromQuery] AccountRegisterModel model)
     {
-        if (!ModelState.IsValid || model.Email == null || model.Password == null)
-        {
-            return BadRequest(ModelState);
-        }
-
         var result = _accservice.Register(model.Email, model.Password);
 
-        return new StatusCodeResult(501);
+        return StatusCode(result.Code, result.Payload);
     }   
 
     [Route("activate")]
@@ -47,9 +42,11 @@ public class AuthController : ControllerBase {
 
     [Route("login")]
     [HttpPost]
-    public IActionResult Login()
+    public IActionResult Login(AccountLoginModel model)
     {
-        return new StatusCodeResult(501);
+        var result = _accservice.Register(model.Username, model.Password);
+
+        return StatusCode(result.Code, result.Payload);
     }
 
     [Route("forgotPassword")]
