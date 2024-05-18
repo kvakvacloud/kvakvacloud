@@ -15,7 +15,7 @@ public class RegistrationCode
     public Guid Code {get;set;}
     [Required]
     [EmailAddress]
-    public string Email {get;set;}
+    public string Email {get;set;}="";
     [Required]
     public DateTime ValidUntil {get;set;}
     public bool Used {get;set;} = false;

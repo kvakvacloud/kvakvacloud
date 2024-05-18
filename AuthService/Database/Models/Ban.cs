@@ -9,7 +9,7 @@ public class Ban {
     [Required]
     public int UserId {get;set;}
     [Required]
-    public User User {get;set;}
+    public User? User {get;set;}
     [Required]
     public DateTime When {get;set;}
     public DateTime Until {get;set;}

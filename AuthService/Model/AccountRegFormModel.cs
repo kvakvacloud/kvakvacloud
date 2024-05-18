@@ -7,14 +7,14 @@ public class AccountRegFormModel
 {
     [Required]
     [ValidGuid]
-    public string Code {get;set;}
+    public string Code {get;set;}="";
 
     [Required]
-    public string Username {get;set;}
+    public string Username {get;set;}="";
 
     [Required]
     [MinLength(8)]
-    public string Password {get;set;}
+    public string Password {get;set;}="";
 
 
 

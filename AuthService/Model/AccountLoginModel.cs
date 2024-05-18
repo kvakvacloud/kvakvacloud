@@ -5,8 +5,8 @@ namespace AuthService.Model;
 public class AccountLoginModel
 {
     [Required]
-    public string Username {get;set;}
+    public string Username {get;set;}="";
 
     [Required]
-    public string Password {get;set;}
+    public string Password {get;set;}="";
 }

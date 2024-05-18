@@ -13,6 +13,7 @@ sealed public class ValidGuid : ValidationAttribute
         {
             if (value != null)
             {
+                #pragma warning disable CS8604
                 var guid = new Guid(value.ToString());
             }
             return true;

@@ -5,10 +5,10 @@ namespace AuthService.Model;
 public class AccountChangePasswordModel
 {
     [Required]
-    public string Token;
+    public string Token {get;set;}="";
     [Required]
-    public string OldPassword;
+    public string OldPassword {get;set;}="";
     [Required]
     [MinLength(8)]
-    public string NewPassword;
+    public string NewPassword {get;set;}="";
 }

@@ -10,12 +10,13 @@ public class User {
     [Key]
     public int Id {get;set;}
     [Required]
-    public string Username {get;set;}
+    [MinLength(3)]
+    public string Username {get;set;}="";
     [EmailAddress]
-    public string Email {get;set;}
+    public string Email {get;set;}="";
     [Required]
     [MinLength(8)]
-    public string Password {get;set;}
+    public string Password {get;set;}="";
     [Required]
     public DateTime RegistrationDate {get;set;}
     [Required]
