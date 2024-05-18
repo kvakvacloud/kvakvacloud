@@ -5,11 +5,12 @@ namespace AuthService.Services;
 
 public interface IAccountService
 {
-    ApiResponse Register(string email);
-    ApiResponse Activate(AccountRegFormModel regform);
-    ApiResponse ValidateRegCode(AccountRegCodeModel model);
-    ApiResponse Login(string username, string password);
-    ApiResponse ChangePassword(AccountChangePasswordModel model);
-    ApiResponse RequestPasswordReset(string email);
-    ApiResponse ResetPassword(AccountPasswordResetModel model);
+    public ApiResponse Register(string email);
+    public ApiResponse Activate(AccountRegFormModel regform);
+    public ApiResponse ValidateRegCode(AccountRegCodeModel model);
+    public ApiResponse Login(string username, string password);
+    public ApiResponse ChangePassword(AccountChangePasswordModel model);
+    public ApiResponse RequestPasswordReset(string email);
+    public ApiResponse ResetPassword(AccountPasswordResetModel model);
+    public ApiResponse RefreshToken(AccountRefreshTokenModel model);
 }

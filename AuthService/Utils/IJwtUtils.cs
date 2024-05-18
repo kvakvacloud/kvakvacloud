@@ -5,7 +5,7 @@ using System.Security.Claims;
 namespace AuthService.Utils;
 
 public interface IJwtUtils {
-    public string GenerateJwtToken(User user);
+    public string GenerateJwtToken(User user, string type);
     public bool ValidateJwtToken(string jwt);
 
     public IEnumerable<Claim> JwtTokenClaims(string jwt);

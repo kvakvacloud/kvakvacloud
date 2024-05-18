@@ -29,7 +29,7 @@ public class AuthController : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.Register(model.Email);
+        var result = _accservice.Register(model.Email ?? "");
 
         return StatusCode(result.Code, result.Payload);
     }   
@@ -82,7 +82,7 @@ public class AuthController : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.RequestPasswordReset(model.Email);
+        var result = _accservice.RequestPasswordReset(model.Email ?? "");
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -108,7 +108,7 @@ public class AuthController : ControllerBase {
     /// Вход в аккаунт с использованием username и пароля.
     /// </summary>
     /// <response code="200">Получен токен</response>
-    [ProducesResponseType(typeof(TokenResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     [Route("login")]
     [HttpPost]
     public IActionResult Login([FromQuery] AccountLoginModel model)
@@ -117,7 +117,7 @@ public class AuthController : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.Login(model.Username, model.Password);
+        var result = _accservice.Login(model.Username ?? "", model.Password ?? "");
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -129,7 +129,7 @@ public class AuthController : ControllerBase {
     /// <response code="401">Неверный старый пароль или неверный токен</response>
     [Route("changePassword")]
     [HttpPut]
-    [ProducesResponseType(typeof(TokenResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     public IActionResult ChangePassword([FromQuery] AccountChangePasswordModel model)
     {
         if (!ModelState.IsValid)
@@ -141,10 +141,20 @@ public class AuthController : ControllerBase {
         return StatusCode(result.Code, result.Payload);
     }
 
-    // [Route("refreshToken")]
-    // [HttpPost]
-    // public IActionResult RefreshToken()
-    // {
-        // return new StatusCodeResult(501);
-    // }
+    /// <summary>
+    /// Запрос refresh и access токенов.
+    /// </summary>
+    /// <response code="200">Получены токены</response>
+    [Route("refreshToken")]
+    [HttpPost]
+    public IActionResult RefreshToken(AccountRefreshTokenModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var result = _accservice.RefreshToken(model);
+
+        return StatusCode(result.Code, result.Payload);
+    }
 }

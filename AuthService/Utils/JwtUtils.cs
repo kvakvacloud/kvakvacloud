@@ -12,7 +12,8 @@ public class JwtUtils : IJwtUtils {
     private readonly IUserRepository _userRepo;
 
     private readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
-    private readonly int expireMinutes = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "5");
+    private readonly int expireMinutesAccess = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "9");
+    private readonly int expireMinutesRefresh = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "10");
 
     public JwtUtils(IUserRepository userRepo)
     {
@@ -47,21 +48,22 @@ public class JwtUtils : IJwtUtils {
         return handler.ReadJwtToken(jwt).Claims;
     }
 
-    public string GenerateJwtToken(User user)
+    public string GenerateJwtToken(User user, string type)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         byte[] key = Encoding.ASCII.GetBytes(secret);
 
         List<Claim> claims = [
             new Claim("UserId", user.Id.ToString()),
-            new Claim("Username", user.Username),
+            new Claim("Username", user.Username ?? ""),
             new Claim("IsSuper", (user.IsSuper ?? false).ToString()),
-            new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString())
+            new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString()),
+            new Claim ("Type", type)
         ];
 
         SecurityTokenDescriptor tokenDescriptor = new() {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(expireMinutes),
+            Expires = DateTime.UtcNow.AddMinutes(type == "refresh" ? expireMinutesRefresh : expireMinutesAccess),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
@@ -92,7 +94,7 @@ public class JwtUtils : IJwtUtils {
             DateTime PasswordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
             User? user = _userRepo.GetUserById(userId);
-            if (user == null || PasswordChangeDate < user.PasswordChangeDate)
+            if (user == null || PasswordChangeDate.AddSeconds(1) < user.PasswordChangeDate)
             {
                 return false;
             }

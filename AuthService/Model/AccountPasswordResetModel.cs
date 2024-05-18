@@ -5,8 +5,8 @@ namespace AuthService.Model;
 public class AccountPasswordResetModel
 {
     [Required]
-    public string ResetCode {get;set;}="";
+    public string? ResetCode {get;set;}
     [Required]
     [MinLength(8)]
-    public string NewPassword {get;set;}="";
+    public string? NewPassword {get;set;}
 }

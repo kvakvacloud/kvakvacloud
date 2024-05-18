@@ -2,9 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuthService.Model;
 
-public class AccountRegisterModel
+public class AccountAccessTokenModel
 {
     [Required]
-    [EmailAddress]
-    public string? Email {get;set;}
+    public string? AccessToken;
 }

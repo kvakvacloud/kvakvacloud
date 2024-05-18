@@ -38,7 +38,7 @@ services:
             - AuthServiceDB:database
             - APIGateway:api
         environment:
-            - AUTH_JWT_SECRET=12345 #remove in production
+            - AUTH_JWT_SECRET=erifuhqiufhkifhilfuqfliwqghkwfgwakgwllwiu2qouofh3iufh34iuhweifbweiufhweof23hiugh #remove in production
             - DB_HOSTNAME=database
             - DB_PORT=5432
             - DB_NAME=postgres

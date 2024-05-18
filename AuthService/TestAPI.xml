@@ -49,5 +49,11 @@
             <response code="200">Получен токен</response>
             <response code="401">Неверный старый пароль или неверный токен</response>
         </member>
+        <member name="M:AuthService.Controller.AuthController.RefreshToken(AuthService.Model.AccountRefreshTokenModel)">
+            <summary>
+            Запрос refresh и access токенов.
+            </summary>
+            <response code="200">Получены токены</response>
+        </member>
     </members>
 </doc>
