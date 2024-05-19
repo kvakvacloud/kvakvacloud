@@ -8,12 +8,15 @@ services:
         networks:
             - auth
             - configuration
+        ports:
+            - "8080:80"
     ConfigurationService:
         build:
             context: ./ConfigurationService/
             dockerfile: Dockerfile
         image: configurationservice
         restart: always
+        hostname: configuration
         links:
             - APIGateway:api
             - ConfigurationServiceDB:database
@@ -37,11 +40,15 @@ services:
             dockerfile: Dockerfile
         image: authservice
         restart: always
+        hostname: auth
         links:
             - AuthServiceDB:database
             - APIGateway:api
         environment:
-            - AUTH_JWT_SECRET=erifuhqiufhkifhilfuqfliwqghkwfgwakgwllwiu2qouofh3iufh34iuhweifbweiufhweof23hiugh #remove in production
+            - AUTH_JWT_SECRET=replaceThisSecretInProduction #replace in production
+            - AUTH_JWT_EXPIRE_ACCESS=5
+            - AUTH_JWT_EXPIRE_REFRESH=10
+            - AUTH_JWT_EXPIRE_SERVICE=5
             - DB_HOSTNAME=database
             - DB_PORT=5432
             - DB_NAME=postgres
@@ -50,8 +57,6 @@ services:
         networks:
             - auth
             - authdb
-        ports:
-            - "8080:8080"
     AuthServiceDB:
         image: postgres:latest
         restart: always

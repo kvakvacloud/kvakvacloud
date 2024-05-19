@@ -52,10 +52,15 @@ var app = builder.Build();
 app.UseRouting();
 app.MapControllers();
 
-app.UseSwagger();
+app.UseSwagger(c =>
+{
+    c.RouteTemplate = "/Auth/swagger/{documentName}/swagger.json";
+});
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample API");
+    c.RoutePrefix = "Auth";
+    //c.SwaggerEndpoint("", "Sample API");
+    c.SwaggerEndpoint("/Auth/swagger/v1/swagger.json", "v1");
 });
 
 app.Run();
