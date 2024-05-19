@@ -6,6 +6,7 @@ namespace AuthService.Utils;
 
 public interface IJwtUtils {
     public string GenerateJwtToken(User user, string type);
+    public string GenerateServiceJwtToken(string service, string ip);
     public bool ValidateJwtToken(string jwt);
 
     public IEnumerable<Claim> JwtTokenClaims(string jwt);

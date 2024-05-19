@@ -55,5 +55,14 @@
             </summary>
             <response code="200">Получены токены</response>
         </member>
+        <member name="M:AuthService.Controller.ServiceAuthController.ServiceToken(AuthService.Model.RequestServiceTokenModel)">
+            <summary>
+            Запросить токен сервиса.
+            </summary>
+            <remarks>
+            Используется для микросервисной аутентификации.
+            </remarks>
+            <response code="200">Успешно</response>
+        </member>
     </members>
 </doc>

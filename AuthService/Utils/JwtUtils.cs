@@ -12,8 +12,9 @@ public class JwtUtils : IJwtUtils {
     private readonly IUserRepository _userRepo;
 
     private readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
-    private readonly int expireMinutesAccess = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "9");
-    private readonly int expireMinutesRefresh = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE") ?? "10");
+    private readonly int expireMinutesAccess = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_ACCESS") ?? "5");
+    private readonly int expireMinutesRefresh = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_REFRESH") ?? "10");
+    private readonly int expireMinutesService = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_SERVICE") ?? "5");
 
     public JwtUtils(IUserRepository userRepo)
     {
@@ -72,6 +73,27 @@ public class JwtUtils : IJwtUtils {
         return tokenHandler.WriteToken(jwtToken);
     }
 
+    public string GenerateServiceJwtToken(string service, string ip)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        byte[] key = Encoding.ASCII.GetBytes(secret);
+
+        List<Claim> claims = [
+            new Claim("Service", service),
+            new Claim("IP", ip)
+        ];
+
+        SecurityTokenDescriptor tokenDescriptor = new() {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddMinutes(expireMinutesService),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        SecurityToken jwtToken = tokenHandler.CreateToken(tokenDescriptor);
+
+        return tokenHandler.WriteToken(jwtToken);
+    }
+
     public bool ValidateJwtToken(string jwt)
     {
         try 
@@ -96,6 +118,12 @@ public class JwtUtils : IJwtUtils {
                 return true;
             }
 
+            //Lighter check for service tokens
+            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value == "service")
+            {
+                return true;
+            }
+
             int userId = int.Parse(validatedJwt.Claims.First(claim => claim.Type == "UserId").Value);
             DateTime PasswordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
@@ -104,11 +132,8 @@ public class JwtUtils : IJwtUtils {
             {
                 return false;
             }
-            else
-            {
-                //Other checks in the future
-                return true;
-            }
+            
+            return true;
         }
         catch (Exception)
         {
