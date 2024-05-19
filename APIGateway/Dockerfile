@@ -1,18 +1,11 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
-WORKDIR /App
+# Use the official Nginx image as the base image
+FROM nginx:latest
 
-# Copy everything
-COPY . ./
-# Restore as distinct layers
-RUN dotnet restore
-# Build and publish a release
-RUN dotnet publish -c Release -o out
+# Copy the custom Nginx configuration file to the container
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /App
-COPY --from=build-env /App/out .
+# Expose port 80 to allow external access
+EXPOSE 80
 
-EXPOSE 8080
-
-ENTRYPOINT ["dotnet", "APIGateway.dll"]
+# Start Nginx when the container launches
+CMD ["nginx", "-g", "daemon off;"]
