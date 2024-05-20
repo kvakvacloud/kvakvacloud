@@ -1,5 +1,6 @@
 using ConfigurationService.Database;
 using ConfigurationService.Repository;
+using ConfigurationService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +17,7 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 });
 
 builder.Services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
+builder.Services.AddScoped<IGlobalSettingsService, GlobalSettingsService>();
 
 builder.Services.AddControllers();
 
