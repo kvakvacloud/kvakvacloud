@@ -1,4 +1,5 @@
 using ConfigurationService.Database;
+using ConfigurationService.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
     var Password=Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "postgres";
     x.UseNpgsql($"Server={Hostname}:{Port};Database={Name};Uid={Username};Pwd={Password};");
 });
+
+builder.Services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
 
 builder.Services.AddControllers();
 
