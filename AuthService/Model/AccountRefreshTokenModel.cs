@@ -7,5 +7,5 @@ public class AccountRefreshTokenModel
 {
     [Required]
     [FromHeader]
-    public string? RefreshToken {get;set;} 
+    public string RefreshToken {get;set;} = null!;
 }

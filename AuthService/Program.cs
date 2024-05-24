@@ -35,10 +35,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-
-        string issuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? "authservice";
-        string audience = Environment.GetEnvironmentVariable("AUTH_JWT_AUDIENCE") ?? "authservice";
-        string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? "TopSecretKeyForTheProtectionOfChocolateCookiesAndOtherSweetThings";
+        string issuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? "kvakvacloud";
+        string audience = Environment.GetEnvironmentVariable("AUTH_JWT_AUDIENCE") ?? "kvakvacloud";
+        string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? "";
 
         options.TokenValidationParameters = new TokenValidationParameters
         {

@@ -7,33 +7,16 @@ using AuthService.Repository;
 
 namespace AuthService.Utils;
 
-public class JwtUtils : IJwtUtils {
+public class JwtUtils(IUserRepository userRepo) : IJwtUtils {
 
-    private readonly IUserRepository _userRepo;
+    private readonly IUserRepository _userRepo = userRepo;
 
-    private readonly string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? GenerateTempSecret();
-    private readonly int expireMinutesAccess = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_ACCESS") ?? "5");
-    private readonly int expireMinutesRefresh = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_REFRESH") ?? "10");
-    private readonly int expireMinutesService = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_SERVICE") ?? "5");
-
-    public JwtUtils(IUserRepository userRepo)
-    {
-        _userRepo = userRepo;
-    }
-
-    private static string GenerateTempSecret()
-    {
-        Console.WriteLine("Warning: no Jwt secret is specified, using a random secret instead. "+
-        "To prevent token invalidation on restart, specify a secret via AUTH_JWT_SECRET variable for AuthService.");
-        byte[] data = new byte[32];
-        Random random = new();
-        random.NextBytes(data);
-
-        // Convert the byte array to a string
-        string secretKey = Convert.ToBase64String(data);
-
-        return secretKey;
-    }
+    private readonly string _secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? "";
+    private readonly string _issuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? "kvakvacloud";
+    private readonly string _audience = Environment.GetEnvironmentVariable("AUTH_JWT_AUDIENCE") ?? "kvakvacloud";
+    private readonly int _expireMinutesAccess = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_ACCESS") ?? "5");
+    private readonly int _expireMinutesRefresh = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_REFRESH") ?? "10");
+    private readonly int _expireMinutesService = Int32.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_EXPIRE_SERVICE") ?? "5");
 
     public JwtSecurityToken StringToJwtToken(string jwt)
     {
@@ -51,20 +34,26 @@ public class JwtUtils : IJwtUtils {
 
     public string GenerateJwtToken(User user, string type)
     {
+        if (user == null)
+        {
+            throw new NullReferenceException("User must not be null");
+        }
+
         var tokenHandler = new JwtSecurityTokenHandler();
-        byte[] key = Encoding.ASCII.GetBytes(secret);
+        byte[] key = Encoding.ASCII.GetBytes(_secret);
 
         List<Claim> claims = [
-            new Claim("UserId", user.Id.ToString()),
-            new Claim("Username", user.Username ?? ""),
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username),
             new Claim("IsSuper", (user.IsSuper ?? false).ToString()),
             new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString()),
-            new Claim ("Type", type)
+            new Claim (ClaimsIdentity.DefaultRoleClaimType, type)
         ];
 
         SecurityTokenDescriptor tokenDescriptor = new() {
+            Issuer = _issuer,
+            Audience = _audience,
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(type == "refresh" ? expireMinutesRefresh : expireMinutesAccess),
+            Expires = DateTime.UtcNow.AddMinutes(type == "refresh" ? _expireMinutesRefresh : _expireMinutesAccess),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
@@ -76,7 +65,7 @@ public class JwtUtils : IJwtUtils {
     public string GenerateServiceJwtToken(string service, string ip)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        byte[] key = Encoding.ASCII.GetBytes(secret);
+        byte[] key = Encoding.ASCII.GetBytes(_secret);
 
         List<Claim> claims = [
             new Claim("Service", service),
@@ -85,7 +74,7 @@ public class JwtUtils : IJwtUtils {
 
         SecurityTokenDescriptor tokenDescriptor = new() {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(expireMinutesService),
+            Expires = DateTime.UtcNow.AddMinutes(_expireMinutesService),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
@@ -99,7 +88,7 @@ public class JwtUtils : IJwtUtils {
         try 
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(secret);
+            byte[] key = Encoding.ASCII.GetBytes(_secret);
 
             TokenValidationParameters validationParameters = new() {
                 ValidateIssuerSigningKey = true,

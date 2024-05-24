@@ -15,7 +15,7 @@ public class ResetCode
     [Required]
     public int UserId {get;set;}
     [Required]
-    public User? User {get;set;}
+    public User User {get;set;} = null!;
     [Required]
     public DateTime ValidUntil {get;set;}
     public bool Used {get;set;}=false;

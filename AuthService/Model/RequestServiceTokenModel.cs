@@ -7,9 +7,9 @@ public class RequestServiceTokenModel
 {
     [Required]
     [FromHeader]
-    public string? Host {get;set;}
+    public string Host {get;set;} = null!;
 
     [Required]
     [FromHeader(Name = "X-Real-IP")]
-    public string? XRealIP {get;set;}
+    public string XRealIP {get;set;} = null!;
 }
