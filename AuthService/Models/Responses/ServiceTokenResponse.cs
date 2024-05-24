@@ -1,4 +1,4 @@
-namespace AuthService.Responses;
+namespace AuthService.Models.Responses;
 
 public class ServiceTokenResponse
 {

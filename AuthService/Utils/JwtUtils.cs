@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using AuthService.Repository;
+using AuthService.Repositories;
 
 namespace AuthService.Utils;
 
@@ -93,8 +93,8 @@ public class JwtUtils(IUserRepository userRepo) : IJwtUtils {
             TokenValidationParameters validationParameters = new() {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
+                ValidateIssuer = true,
+                ValidateAudience = true,
                 ClockSkew = TimeSpan.Zero
             };
 

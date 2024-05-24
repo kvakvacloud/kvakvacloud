@@ -1,7 +1,7 @@
 using System.Text;
 using AuthService.Database;
 
-using AuthService.Repository;
+using AuthService.Repositories;
 using AuthService.Services;
 using AuthService.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

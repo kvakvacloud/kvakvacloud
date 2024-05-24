@@ -1,5 +1,5 @@
-using AuthService.Model;
-using AuthService.Responses;
+using AuthService.Models.Requests;
+using AuthService.Models.Responses;
 using AuthService.Utils;
 
 namespace AuthService.Services;

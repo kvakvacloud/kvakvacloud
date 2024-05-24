@@ -4,6 +4,7 @@ using AuthService.Database.Models;
 using System.Security.Claims;
 namespace AuthService.Utils;
 
+[Obsolete("Используйте IJwtService")]
 public interface IJwtUtils {
     public string GenerateJwtToken(User user, string type);
     public string GenerateServiceJwtToken(string service, string ip);

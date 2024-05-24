@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AuthService.Model;
+namespace AuthService.Models.Requests;
 
 public class AccountPasswordResetRequest
 {

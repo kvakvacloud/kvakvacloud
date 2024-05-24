@@ -1,15 +1,12 @@
 using AuthService.Database;
 using AuthService.Database.Models;
 
-namespace AuthService.Repository;
+namespace AuthService.Repositories;
 
-public class RegistrationCodeRepository : IRegistrationCodeRepository
+public class RegistrationCodeRepository(ApplicationContext db) : IRegistrationCodeRepository
 {
-    private readonly ApplicationContext _db;
-    public RegistrationCodeRepository(ApplicationContext db)
-    {
-        _db = db;
-    }
+    private readonly ApplicationContext _db = db;
+
     public IQueryable<RegistrationCode> GetRegistrationCodes()
     {
         return _db.RegistrationCodes.AsQueryable();

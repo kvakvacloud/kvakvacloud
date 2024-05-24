@@ -1,7 +1,7 @@
 using AuthService.Database.Models;
-using AuthService.Model;
-using AuthService.Repository;
-using AuthService.Responses;
+using AuthService.Models.Requests;
+using AuthService.Repositories;
+using AuthService.Models.Responses;
 using AuthService.Utils;
 
 namespace AuthService.Services;

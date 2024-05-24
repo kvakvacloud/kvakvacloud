@@ -1,7 +1,7 @@
 using AuthService.Database;
 using AuthService.Database.Models;
 
-namespace AuthService.Repository;
+namespace AuthService.Repositories;
 
 public interface IUserRepository
 {

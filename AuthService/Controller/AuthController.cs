@@ -1,21 +1,18 @@
-using AuthService.Model;
-using AuthService.Responses;
+using AuthService.Models.Requests;
+using AuthService.Models.Responses;
 using AuthService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace AuthService.Controller;
+namespace AuthService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController : ControllerBase {
+public class AuthController(IAccountService accountService) : ControllerBase {
 
-    private readonly IAccountService _accservice;
+    private readonly IAccountService _accservice = accountService;
 
-    public AuthController(IAccountService accountService)
-    {
-        _accservice = accountService;
-    }
 
     /// <summary>
     /// Запросить регистрацию по данному Email.
@@ -129,6 +126,7 @@ public class AuthController : ControllerBase {
     /// <response code="401">Неверный старый пароль или неверный токен</response>
     [Route("changePassword")]
     [HttpPut]
+    [Authorize(Roles = "user")]
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     public IActionResult ChangePassword([FromBody] AccountChangePasswordRequest model)
     {

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using AuthService.Validation.Attributes;
 
-namespace AuthService.Model;
+namespace AuthService.Models.Requests;
 
 public class AccountFinishRegistrationRequest
 {

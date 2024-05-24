@@ -1,10 +1,10 @@
-using AuthService.Model;
-using AuthService.Responses;
+using AuthService.Models.Requests;
+using AuthService.Models.Responses;
 using AuthService.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace AuthService.Controller;
+namespace AuthService.Controllers;
 
 [ApiController]
 [Route("[controller]")]

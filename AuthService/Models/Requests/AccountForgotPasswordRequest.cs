@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AuthService.Model;
+namespace AuthService.Models.Requests;
 
-public class AccountRegisterRequest
+public class AccountForgotPasswordRequest
 {
     [Required]
     [EmailAddress]
