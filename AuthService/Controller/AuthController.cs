@@ -111,7 +111,7 @@ public class AuthController : ControllerBase {
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     [Route("login")]
     [HttpPost]
-    public IActionResult Login([FromQuery] AccountLoginRequest model)
+    public IActionResult Login([FromBody] AccountLoginRequest model)
     {
         if (!ModelState.IsValid)
         {
@@ -130,7 +130,7 @@ public class AuthController : ControllerBase {
     [Route("changePassword")]
     [HttpPut]
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
-    public IActionResult ChangePassword([FromQuery] AccountChangePasswordRequest model)
+    public IActionResult ChangePassword([FromBody] AccountChangePasswordRequest model)
     {
         if (!ModelState.IsValid)
         {
