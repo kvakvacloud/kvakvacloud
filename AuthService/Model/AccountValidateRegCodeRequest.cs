@@ -3,7 +3,7 @@ using AuthService.Validation.Attributes;
 
 namespace AuthService.Model;
 
-public class AccountRegCodeModel
+public class AccountValidateRegCodeRequest
 {
     [Required]
     [ValidGuid]

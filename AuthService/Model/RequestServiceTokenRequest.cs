@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthService.Model;
 
-public class RequestServiceTokenModel
+public class RequestServiceTokenRequest
 {
     [Required]
     [FromHeader]

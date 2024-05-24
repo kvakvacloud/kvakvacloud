@@ -27,7 +27,7 @@ public class ServiceAuthController : ControllerBase {
     [Route("serviceToken")]
     [HttpPost]
     [ProducesResponseType(typeof(ServiceTokenResponse), (int)HttpStatusCode.OK)]
-    public IActionResult ServiceToken(RequestServiceTokenModel model)
+    public IActionResult ServiceToken(RequestServiceTokenRequest model)
     {
         if (!ModelState.IsValid)
         {

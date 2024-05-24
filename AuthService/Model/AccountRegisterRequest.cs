@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuthService.Model;
 
-public class AccountRegisterModel
+public class AccountRegisterRequest
 {
     [Required]
     [EmailAddress]

@@ -41,7 +41,7 @@ public class AccountService : IAccountService
         return new ApiResponse{Code=200};
     }
 
-    public ApiResponse ValidateRegCode(AccountRegCodeModel model)
+    public ApiResponse ValidateRegCode(AccountValidateRegCodeRequest model)
     {
         RegistrationCode? regcode = _regcodeRepo.GetRegistrationCodeByCode(new Guid(model.Code ?? ""));
 
@@ -55,7 +55,7 @@ public class AccountService : IAccountService
         }
     }
 
-    public ApiResponse Activate(AccountRegFormModel regform)
+    public ApiResponse FinishRegistration(AccountFinishRegistrationRequest regform)
     {
         RegistrationCode? regcode = _regcodeRepo.GetRegistrationCodeByCode(new Guid(regform.Code ?? ""));
 
@@ -117,7 +117,7 @@ public class AccountService : IAccountService
         return new ApiResponse {Code=200, Payload=tokens};
     }
 
-    public ApiResponse ChangePassword(AccountChangePasswordModel model)
+    public ApiResponse ChangePassword(AccountChangePasswordRequest model)
     {
         if (!_jwtUtils.ValidateJwtToken(model.AccessToken ?? ""))
         {
@@ -160,7 +160,7 @@ public class AccountService : IAccountService
         return new ApiResponse{Code=501}; //todo
     }
 
-    public ApiResponse ResetPassword(AccountPasswordResetModel model)
+    public ApiResponse ResetPassword(AccountPasswordResetRequest model)
     {  
         return new ApiResponse{Code=501}; //todo
     }

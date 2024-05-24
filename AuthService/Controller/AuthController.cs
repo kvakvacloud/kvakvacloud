@@ -23,7 +23,7 @@ public class AuthController : ControllerBase {
     /// <response code="200">Код отправлен на почту, если она не зарегистрирована.</response>
     [Route("register")]
     [HttpPost]
-    public IActionResult Register([FromQuery] AccountRegisterModel model)
+    public IActionResult Register([FromBody] AccountRegisterRequest model)
     {
         if (!ModelState.IsValid)
         {
@@ -41,7 +41,7 @@ public class AuthController : ControllerBase {
     /// <response code="404">Код не существует или его срок действия истек.</response>
     [Route("validateRegCode")]
     [HttpGet]
-    public IActionResult ValidateRegCode([FromQuery] AccountRegCodeModel model)
+    public IActionResult ValidateRegCode([FromBody] AccountValidateRegCodeRequest model)
     {
         if (!ModelState.IsValid)
         {
@@ -59,13 +59,13 @@ public class AuthController : ControllerBase {
     /// <response code="401">Действие кода истекло или код не существует.</response>
     [Route("activate")]
     [HttpPost]
-    public IActionResult Activate([FromQuery] AccountRegFormModel model)
+    public IActionResult FinishRegistration([FromBody] AccountFinishRegistrationRequest model)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.Activate(model);
+        var result = _accservice.FinishRegistration(model);
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -76,7 +76,7 @@ public class AuthController : ControllerBase {
     /// <response code="200">Запрос отправлен на почту, если она зарегистрирована.</response>
     [Route("forgotPassword")]
     [HttpPost]
-    public IActionResult ForgotPassword([FromQuery] AccountForgotPasswordModel model)
+    public IActionResult ForgotPassword([FromBody] AccountForgotPasswordRequest model)
     {
         if (!ModelState.IsValid)
         {
@@ -93,7 +93,7 @@ public class AuthController : ControllerBase {
     /// <response code="200">Пароль успешно изменен.</response>
     [Route("resetPassword")]
     [HttpPost]
-    public IActionResult ResetPassword([FromQuery] AccountPasswordResetModel model)
+    public IActionResult ResetPassword([FromBody] AccountPasswordResetRequest model)
     {
         if (!ModelState.IsValid)
         {
@@ -111,7 +111,7 @@ public class AuthController : ControllerBase {
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     [Route("login")]
     [HttpPost]
-    public IActionResult Login([FromQuery] AccountLoginModel model)
+    public IActionResult Login([FromQuery] AccountLoginRequest model)
     {
         if (!ModelState.IsValid)
         {
@@ -130,7 +130,7 @@ public class AuthController : ControllerBase {
     [Route("changePassword")]
     [HttpPut]
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
-    public IActionResult ChangePassword([FromQuery] AccountChangePasswordModel model)
+    public IActionResult ChangePassword([FromQuery] AccountChangePasswordRequest model)
     {
         if (!ModelState.IsValid)
         {

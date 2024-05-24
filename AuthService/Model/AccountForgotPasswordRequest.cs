@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuthService.Model;
 
-public class AccountForgotPasswordModel
+public class AccountForgotPasswordRequest
 {
     [Required]
     [EmailAddress]

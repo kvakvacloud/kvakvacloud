@@ -4,5 +4,5 @@ using AuthService.Responses;
 namespace AuthService.Services;
 public interface IMicroserviceAuthService
 {
-    public ApiResponse ServiceToken(RequestServiceTokenModel model);
+    public ApiResponse ServiceToken(RequestServiceTokenRequest model);
 }

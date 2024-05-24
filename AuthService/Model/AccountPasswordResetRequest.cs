@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuthService.Model;
 
-public class AccountPasswordResetModel
+public class AccountPasswordResetRequest
 {
     [Required]
     public string ResetCode {get;set;} = null!;

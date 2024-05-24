@@ -4,45 +4,45 @@
         <name>AuthService</name>
     </assembly>
     <members>
-        <member name="M:AuthService.Controller.AuthController.Register(AuthService.Model.AccountRegisterModel)">
+        <member name="M:AuthService.Controller.AuthController.Register(AuthService.Model.AccountRegisterRequest)">
             <summary>
             Запросить регистрацию по данному Email.
             </summary>
             <response code="200">Код отправлен на почту, если она не зарегистрирована.</response>
         </member>
-        <member name="M:AuthService.Controller.AuthController.ValidateRegCode(AuthService.Model.AccountRegCodeModel)">
+        <member name="M:AuthService.Controller.AuthController.ValidateRegCode(AuthService.Model.AccountValidateRegCodeRequest)">
             <summary>
             Проверить, что код регистрации валиден.
             </summary>
             <response code="200">Код валиден.</response>
             <response code="404">Код не существует или его срок действия истек.</response>
         </member>
-        <member name="M:AuthService.Controller.AuthController.Activate(AuthService.Model.AccountRegFormModel)">
+        <member name="M:AuthService.Controller.AuthController.FinishRegistration(AuthService.Model.AccountFinishRegistrationRequest)">
             <summary>
             Предоставить код активации аккаунта, заполнить форму и завершить регистрацию
             </summary>
             <response code="200">Регистрация успешна.</response>
             <response code="401">Действие кода истекло или код не существует.</response>
         </member>
-        <member name="M:AuthService.Controller.AuthController.ForgotPassword(AuthService.Model.AccountForgotPasswordModel)">
+        <member name="M:AuthService.Controller.AuthController.ForgotPassword(AuthService.Model.AccountForgotPasswordRequest)">
             <summary>
             Запрос на сброс пароля для аккаунта с указанной почтой. 
             </summary>
             <response code="200">Запрос отправлен на почту, если она зарегистрирована.</response>
         </member>
-        <member name="M:AuthService.Controller.AuthController.ResetPassword(AuthService.Model.AccountPasswordResetModel)">
+        <member name="M:AuthService.Controller.AuthController.ResetPassword(AuthService.Model.AccountPasswordResetRequest)">
             <summary>
             Сброс пароля аккаунта при помощи кода восстановления.
             </summary>
             <response code="200">Пароль успешно изменен.</response>
         </member>
-        <member name="M:AuthService.Controller.AuthController.Login(AuthService.Model.AccountLoginModel)">
+        <member name="M:AuthService.Controller.AuthController.Login(AuthService.Model.AccountLoginRequest)">
             <summary>
             Вход в аккаунт с использованием username и пароля.
             </summary>
             <response code="200">Получен токен</response>
         </member>
-        <member name="M:AuthService.Controller.AuthController.ChangePassword(AuthService.Model.AccountChangePasswordModel)">
+        <member name="M:AuthService.Controller.AuthController.ChangePassword(AuthService.Model.AccountChangePasswordRequest)">
             <summary>
             Изменить пароль аккаунта.
             </summary>
@@ -55,7 +55,7 @@
             </summary>
             <response code="200">Получены токены</response>
         </member>
-        <member name="M:AuthService.Controller.ServiceAuthController.ServiceToken(AuthService.Model.RequestServiceTokenModel)">
+        <member name="M:AuthService.Controller.ServiceAuthController.ServiceToken(AuthService.Model.RequestServiceTokenRequest)">
             <summary>
             Запросить токен сервиса.
             </summary>

@@ -12,7 +12,7 @@ public class MicroserviceAuthService : IMicroserviceAuthService
         _jwtUtils = jwtUtils;
     }
 
-    public ApiResponse ServiceToken(RequestServiceTokenModel model)
+    public ApiResponse ServiceToken(RequestServiceTokenRequest model)
     {
         if (model.Host == null || model.XRealIP == null)
         {

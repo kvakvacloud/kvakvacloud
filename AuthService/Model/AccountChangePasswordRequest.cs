@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuthService.Model;
 
-public class AccountChangePasswordModel
+public class AccountChangePasswordRequest
 {
     [Required]
     public string AccessToken {get;set;} = null!;
