@@ -96,7 +96,7 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
     {
         User? user = _userRepo.GetUserByUsername(username);
 
-        if (user == null || BcryptUtils.VerifyPassword(password, user.Password ?? ""))
+        if (user == null || !BcryptUtils.VerifyPassword(password, user.Password ?? ""))
         {
             return new ApiResponse{Code=401};
         }

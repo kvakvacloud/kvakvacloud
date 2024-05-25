@@ -38,7 +38,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
     /// <response code="404">Код не существует или его срок действия истек.</response>
     [Route("validateRegCode")]
     [HttpGet]
-    public IActionResult ValidateRegCode([FromBody] AccountValidateRegCodeRequest model)
+    public IActionResult ValidateRegCode([FromQuery] AccountValidateRegCodeRequest model)
     {
         if (!ModelState.IsValid)
         {
