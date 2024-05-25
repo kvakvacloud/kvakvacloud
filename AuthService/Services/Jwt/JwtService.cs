@@ -24,7 +24,10 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             Subject = new ClaimsIdentity(new[]
             { 
                 new Claim("Type", "access"),
-                new Claim("Username", user.Username)
+                new Claim("Username", user.Username),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType,"User"),
+                new Claim(ClaimTypes.AuthenticationMethod, "Access")
             }),
             Expires = DateTime.UtcNow.AddMinutes(5),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -45,7 +48,10 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             {
                 new Claim("Type", "refresh"),
                 new Claim("Username", user.Username),
-                new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString())
+                new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString()),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType,"User"),
+                new Claim(ClaimTypes.AuthenticationMethod, "Refresh")
             }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -66,7 +72,10 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             Subject = new ClaimsIdentity(new[] 
             {
                 new Claim("Type", "microservice"),
-                new Claim("Microservice", microserviceId)
+                new Claim("Microservice", microserviceId),
+                new(ClaimsIdentity.DefaultNameClaimType, microserviceId),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType,"Admin"),
+                new Claim(ClaimTypes.AuthenticationMethod, "Microservice")
             }),
             Expires = DateTime.UtcNow.AddMinutes(10),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

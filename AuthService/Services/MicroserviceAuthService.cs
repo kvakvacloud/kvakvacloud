@@ -1,16 +1,12 @@
 using AuthService.Models.Requests;
 using AuthService.Models.Responses;
+using AuthService.Services.Jwt;
 using AuthService.Utils;
 
 namespace AuthService.Services;
-public class MicroserviceAuthService : IMicroserviceAuthService
+public class MicroserviceAuthService(IJwtService jwtService) : IMicroserviceAuthService
 {
-    private readonly IJwtUtils _jwtUtils;
-
-    public MicroserviceAuthService(IJwtUtils jwtUtils)
-    {
-        _jwtUtils = jwtUtils;
-    }
+    private readonly IJwtService _jwtService = jwtService;
 
     public ApiResponse ServiceToken(RequestServiceTokenRequest model)
     {
@@ -18,7 +14,7 @@ public class MicroserviceAuthService : IMicroserviceAuthService
         {
             return new ApiResponse{Code=400};
         }
-        var newServiceToken = _jwtUtils.GenerateServiceJwtToken(model.Host, model.XRealIP);
+        var newServiceToken = _jwtService.GenerateMicroserviceToken(model.Host);
         
         ServiceTokenResponse payload = new()
         {

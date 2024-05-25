@@ -4,6 +4,7 @@ using AuthService.Repositories;
 using AuthService.Models.Responses;
 using AuthService.Utils;
 using AuthService.Services.Jwt;
+using System.Security.Claims;
 
 namespace AuthService.Services;
 
@@ -67,9 +68,9 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
         regcode.Used=true;
         regcode.WhenWasUsed=DateTime.UtcNow;
 
-        User? newUser = new() {
+        User newUser = new() {
             Email=regcode.Email,
-            Username=regform.Username,
+            Username=regform.Username!,
             Password=regform.Password,
             RegistrationDate=DateTime.UtcNow,
             PasswordChangeDate=DateTime.UtcNow
@@ -109,17 +110,14 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
         return new ApiResponse {Code=200, Payload=tokens};
     }
 
-    public ApiResponse ChangePassword(AccountChangePasswordRequest model)
+    public ApiResponse ChangePassword(AccountChangePasswordRequest model, ClaimsPrincipal userClaims)
     {
-        if (!_jwtService.ValidateJwtToken(model.AccessToken ?? ""))
-        {
-            return new ApiResponse{Code=401};
-        }
-        User? user = _userRepo.GetUserByUsername(_jwtUtils.JwtTokenClaims(model.AccessToken ?? "").First(c => c.Type == "Username").Value);
+        var username = userClaims!.Identity!.Name!;
+        User? user = _userRepo.GetUserByUsername(username);
 
         if (user == null)
         {
-            return new ApiResponse{Code=500, Payload=new{Message="Unexpected token problem"}};
+            return new ApiResponse{Code=500, Payload=new{Message="Failed to retreive user"}};
         }
 
         if (!BcryptUtils.VerifyPassword(model.OldPassword ?? "", user.Password ?? ""))
@@ -157,27 +155,14 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
         return new ApiResponse{Code=501}; //todo
     }
 
-    public ApiResponse RefreshToken(AccountRefreshTokenModel model)
+    public ApiResponse RefreshToken(ClaimsPrincipal userClaims)
     {
-        if (!_jwtService.ValidateRefreshToken(refreshtokenhere))
-        {
-            return new ApiResponse{Code=401, Payload=new{Message="Token not validated"}};
-        }
-        
-        var token = _jwtUtils.StringToJwtToken(model.RefreshToken ?? "");
-
-        if (token.Claims.First(c => c.Type == "Type").Value != "refresh")
-        {
-            return new ApiResponse{Code=401, Payload=new{Message="Wrong token type"}};
-        }
-
-        User? user = _userRepo.GetUserByUsername(token.Claims.First(c => c.Type == "Username").Value);
-
+        var username = userClaims!.Identity!.Name!;
+        User? user = _userRepo.GetUserByUsername(username);
         if (user == null)
         {
-            return new ApiResponse{Code=500, Payload=new{Message="Unexpected token problem"}};
+            return new ApiResponse {Code=500, Payload=new{Message="Failed to retrieve user"}};
         }
-
         TokensResponse tokens = new() 
         {
             RefreshToken = _jwtService.GenerateAccessToken(user),

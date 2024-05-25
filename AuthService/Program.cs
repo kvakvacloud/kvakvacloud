@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using AuthService.Authentication;
 using AuthService.Database;
@@ -33,7 +34,19 @@ builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IMicroserviceAuthService, MicroserviceAuthService>();
 
 // Authorization
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("Access", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.AuthenticationMethod, "Access");
+    })
+    .AddPolicy("Refresh", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.AuthenticationMethod, "Refresh");
+    })
+    .AddPolicy("Microservice", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.AuthenticationMethod, "Microservice");
+    });
 builder.Services.AddAuthentication("JwtScheme")
 .AddScheme<AuthenticationSchemeOptions, JwtAuthenticationHandler>("JwtScheme", options => {})
 

@@ -126,7 +126,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
     /// <response code="401">Неверный старый пароль или неверный токен</response>
     [Route("changePassword")]
     [HttpPut]
-    [Authorize(Roles = "user")]
+    [Authorize(Roles = "User", Policy = "Access")]
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
     public IActionResult ChangePassword([FromBody] AccountChangePasswordRequest model)
     {
@@ -134,7 +134,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.ChangePassword(model);
+        var result = _accservice.ChangePassword(model, User);
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -145,14 +145,15 @@ public class AuthController(IAccountService accountService) : ControllerBase {
     /// <response code="200">Получены токены</response>
     [Route("refreshToken")]
     [HttpPost]
+    [Authorize(Roles = "User", Policy = "Refresh")]
     [ProducesResponseType(typeof(TokensResponse), (int)HttpStatusCode.OK)]
-    public IActionResult RefreshToken(AccountRefreshTokenModel model)
+    public IActionResult RefreshToken()
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.RefreshToken(model);
+        var result = _accservice.RefreshToken(User);
 
         return StatusCode(result.Code, result.Payload);
     }

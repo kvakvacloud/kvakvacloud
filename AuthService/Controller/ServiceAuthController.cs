@@ -1,6 +1,7 @@
 using AuthService.Models.Requests;
 using AuthService.Models.Responses;
 using AuthService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -26,6 +27,7 @@ public class ServiceAuthController : ControllerBase {
     /// <response code="200">Успешно</response>
     [Route("serviceToken")]
     [HttpPost]
+    [Authorize(Roles = "Admin", Policy = "Microservice")]
     [ProducesResponseType(typeof(ServiceTokenResponse), (int)HttpStatusCode.OK)]
     public IActionResult ServiceToken(RequestServiceTokenRequest model)
     {
