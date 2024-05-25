@@ -120,6 +120,8 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())
