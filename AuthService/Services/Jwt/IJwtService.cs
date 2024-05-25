@@ -4,5 +4,10 @@ namespace AuthService.Services.Jwt;
 
 public interface IJwtService
 {
-    public string GrantJwtTokens(User user);
+    string GenerateAccessToken(User user);
+    string GenerateRefreshToken(User user);
+    string GenerateMicroserviceToken(string microserviceId);
+    bool ValidateAccessToken(string token);
+    bool ValidateRefreshToken(string token);
+    bool ValidateMicroserviceToken(string token, out string? microservice);
 }

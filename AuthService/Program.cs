@@ -3,6 +3,7 @@ using AuthService.Database;
 
 using AuthService.Repositories;
 using AuthService.Services;
+using AuthService.Services.Jwt;
 using AuthService.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 // Services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRegistrationCodeRepository, RegistrationCodeRepository>();
-builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IMicroserviceAuthService, MicroserviceAuthService>();
 
