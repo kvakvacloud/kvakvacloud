@@ -3,21 +3,15 @@ using AuthService.Models.Requests;
 using AuthService.Repositories;
 using AuthService.Models.Responses;
 using AuthService.Utils;
+using AuthService.Services.Jwt;
 
 namespace AuthService.Services;
 
-public class AccountService : IAccountService
+public class AccountService(IUserRepository userRepo, IRegistrationCodeRepository regcodeRepo, IJwtService jwtService) : IAccountService
 {
-    private readonly IUserRepository _userRepo;
-    private readonly IRegistrationCodeRepository _regcodeRepo;
-    private readonly IJwtUtils _jwtUtils;
-
-    public AccountService(IUserRepository userRepo, IRegistrationCodeRepository regcodeRepo, IJwtUtils jwtUtils)
-    {
-        _userRepo = userRepo;
-        _regcodeRepo = regcodeRepo;
-        _jwtUtils = jwtUtils;
-    }
+    private readonly IUserRepository _userRepo = userRepo;
+    private readonly IRegistrationCodeRepository _regcodeRepo = regcodeRepo;
+    private readonly IJwtService _jwtService = jwtService;
 
     public ApiResponse Register(string email)
     {
@@ -91,8 +85,8 @@ public class AccountService : IAccountService
 
         TokensResponse tokens = new() 
         {
-            RefreshToken = _jwtUtils.GenerateJwtToken(newUser, "refresh"),
-            AccessToken = _jwtUtils.GenerateJwtToken(newUser, "access")
+            RefreshToken = _jwtService.GenerateAccessToken(newUser),
+            AccessToken = _jwtService.GenerateRefreshToken(newUser)
         };
 
         return new ApiResponse {Code=200, Payload=tokens};
@@ -106,12 +100,10 @@ public class AccountService : IAccountService
             return new ApiResponse{Code=401};
         }
 
-        string refreshToken = _jwtUtils.GenerateJwtToken(user, "refresh");
-
         TokensResponse tokens = new() 
         {
-            RefreshToken = _jwtUtils.GenerateJwtToken(user, "refresh"),
-            AccessToken = _jwtUtils.GenerateJwtToken(user, "access")
+            RefreshToken = _jwtService.GenerateRefreshToken(user),
+            AccessToken = _jwtService.GenerateAccessToken(user)
         };
 
         return new ApiResponse {Code=200, Payload=tokens};
@@ -119,7 +111,7 @@ public class AccountService : IAccountService
 
     public ApiResponse ChangePassword(AccountChangePasswordRequest model)
     {
-        if (!_jwtUtils.ValidateJwtToken(model.AccessToken ?? ""))
+        if (!_jwtService.ValidateJwtToken(model.AccessToken ?? ""))
         {
             return new ApiResponse{Code=401};
         }
@@ -148,8 +140,8 @@ public class AccountService : IAccountService
 
         TokensResponse tokens = new() 
         {
-            RefreshToken = _jwtUtils.GenerateJwtToken(user, "refresh"),
-            AccessToken = _jwtUtils.GenerateJwtToken(user, "access")
+            RefreshToken = _jwtService.GenerateRefreshToken(user),
+            AccessToken = _jwtService.GenerateAccessToken(user)
         };
 
         return new ApiResponse {Code=200, Payload=tokens};
@@ -167,7 +159,7 @@ public class AccountService : IAccountService
 
     public ApiResponse RefreshToken(AccountRefreshTokenModel model)
     {
-        if (!_jwtUtils.ValidateJwtToken(model.RefreshToken ?? ""))
+        if (!_jwtService.ValidateRefreshToken(refreshtokenhere))
         {
             return new ApiResponse{Code=401, Payload=new{Message="Token not validated"}};
         }

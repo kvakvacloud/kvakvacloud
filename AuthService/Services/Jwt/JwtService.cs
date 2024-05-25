@@ -21,7 +21,11 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         var key = Convert.FromBase64String(_secretKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("Username", user.Username) }),
+            Subject = new ClaimsIdentity(new[]
+            { 
+                new Claim("Type", "access"),
+                new Claim("Username", user.Username)
+            }),
             Expires = DateTime.UtcNow.AddMinutes(5),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -37,9 +41,9 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         {
             Issuer = _issuer,
             Audience = _audience,
-
             Subject = new ClaimsIdentity(new[] 
             {
+                new Claim("Type", "refresh"),
                 new Claim("Username", user.Username),
                 new Claim("PasswordChangeDate", user.PasswordChangeDate.ToString())
             }),
@@ -61,6 +65,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
 
             Subject = new ClaimsIdentity(new[] 
             {
+                new Claim("Type", "microservice"),
                 new Claim("Microservice", microserviceId)
             }),
             Expires = DateTime.UtcNow.AddMinutes(10),
@@ -70,31 +75,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         return tokenHandler.WriteToken(token);
     }
 
-    public bool ValidateAccessToken(string token)
-    {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Convert.FromBase64String(_secretKey);
-
-        try
-        {
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidIssuer = _issuer,
-                ValidAudience = _audience,
-                IssuerSigningKey = new SymmetricSecurityKey(key)
-            }, out SecurityToken validatedToken);
-
-            return true;
-        }
-        catch(Exception)
-        {
-            return false;
-        }
-    }
-
-    public bool ValidateRefreshToken(string token)
+    public bool ValidateAccessToken(string token, out string? username)
     {
         try
         {
@@ -113,17 +94,67 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
-            var claims = validatedJwt.Claims;
-            var username = validatedJwt.Claims.First(claim => claim.Type == "Username").Value;
+            username = validatedJwt.Claims.First(claim => claim.Type == "Username").Value;
             var passwordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
-            // Проверка, что дата изменения пароля совпадает с фактической
-            return (_userRepo.GetUserByUsername(username) ?? new User()).PasswordChangeDate == passwordChangeDate;
+            // Проверка типа токена
+            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "active")
+            {
+                return false;
+            }
+
+            return true;
         }
         catch (Exception)
         {
+            username = null;
             return false;
         }  
+    }
+
+    public bool ValidateRefreshToken(string token, out string? username)
+    {
+        try
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(_secretKey);
+    
+            TokenValidationParameters validationParameters = new() {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ClockSkew = TimeSpan.Zero
+            };
+    
+            // Валидация токена
+            tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+            JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
+
+            username = validatedJwt.Claims.First(claim => claim.Type == "Username").Value;
+            var passwordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
+
+            // Проверка типа токена
+            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "refresh")
+            {
+                username=null;
+                return false;
+            }
+
+            // Проверка, что дата изменения пароля совпадает с фактической
+            if ((_userRepo.GetUserByUsername(username) ?? new User()).PasswordChangeDate != passwordChangeDate)
+            {
+                username=null;
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception)
+        {
+            username=null;
+            return false;
+        }
     }
 
     public bool ValidateMicroserviceToken(string token, out string? microservice)
@@ -145,9 +176,14 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
-            var claims = validatedJwt.Claims;
-            microservice = validatedJwt.Claims.First(claim => claim.Type == "Microservice").Value;
+            // Проверка типа токена
+            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "microservice")
+            {
+                microservice=null;
+                return false;
+            }
 
+            microservice = validatedJwt.Claims.First(claim => claim.Type == "microservice").Value;
             return true;
             
         }
