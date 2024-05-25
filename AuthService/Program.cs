@@ -26,11 +26,11 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 });
 
 // Services
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IRegistrationCodeRepository, RegistrationCodeRepository>();
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IMicroserviceAuthService, MicroserviceAuthService>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IRegistrationCodeRepository, RegistrationCodeRepository>();
+builder.Services.AddTransient<IJwtService, JwtService>();
+builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IMicroserviceAuthService, MicroserviceAuthService>();
 
 // Authorization
 builder.Services.AddAuthorization();
