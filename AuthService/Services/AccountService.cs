@@ -71,7 +71,7 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
         User newUser = new() {
             Email=regcode.Email,
             Username=regform.Username!,
-            Password=regform.Password,
+            Password=BcryptUtils.HashPassword(regform.Password),
             RegistrationDate=DateTime.UtcNow,
             PasswordChangeDate=DateTime.UtcNow
         };
