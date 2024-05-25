@@ -180,8 +180,8 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
 
         TokensResponse tokens = new() 
         {
-            RefreshToken = _jwtUtils.GenerateJwtToken(user, "refresh"),
-            AccessToken = _jwtUtils.GenerateJwtToken(user, "access")
+            RefreshToken = _jwtService.GenerateAccessToken(user),
+            AccessToken = _jwtService.GenerateRefreshToken(user)
         };
 
         return new ApiResponse {Code=200, Payload=tokens};

@@ -1,10 +1,11 @@
 using System.Text;
+using AuthService.Authentication;
 using AuthService.Database;
 
 using AuthService.Repositories;
 using AuthService.Services;
 using AuthService.Services.Jwt;
-using AuthService.Utils;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -33,7 +34,9 @@ builder.Services.AddScoped<IMicroserviceAuthService, MicroserviceAuthService>();
 
 // Authorization
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication("JwtScheme")
+.AddScheme<AuthenticationSchemeOptions, JwtAuthenticationHandler>("JwtScheme", options => {})
+
     .AddJwtBearer(options =>
     {
         string issuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? "kvakvacloud";

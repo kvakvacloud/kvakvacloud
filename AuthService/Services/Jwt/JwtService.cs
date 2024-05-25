@@ -75,10 +75,15 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         return tokenHandler.WriteToken(token);
     }
 
-    public bool ValidateAccessToken(string token, out string? username)
+    public bool ValidateAccessToken(string? token, out string? username)
     {
         try
         {
+            if (token == null)
+            {
+                username = null;
+                return false;
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_secretKey);
     
@@ -112,10 +117,15 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         }  
     }
 
-    public bool ValidateRefreshToken(string token, out string? username)
+    public bool ValidateRefreshToken(string? token, out string? username)
     {
         try
         {
+            if (token == null)
+            {
+                username = null;
+                return false;
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_secretKey);
     
@@ -157,10 +167,15 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         }
     }
 
-    public bool ValidateMicroserviceToken(string token, out string? microservice)
+    public bool ValidateMicroserviceToken(string? token, out string? microservice)
     {
         try
         {
+            if (token == null)
+            {
+                microservice = null;
+                return false;
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(_secretKey);
     
