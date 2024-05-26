@@ -13,8 +13,7 @@ public class JwtAuthenticationHandler(
 {
     private readonly IJwtService _jwtService = jwtService;
 
-    protected override async Task<AuthenticateResult> HandleAu
-    thenticateAsync()
+    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         try
         {
