@@ -9,10 +9,10 @@ namespace AuthService.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController(IAccountService accountService) : ControllerBase {
+public class AuthController(IAccountService accService, IMicroserviceAuthService mAuthService) : ControllerBase {
 
-    private readonly IAccountService _accservice = accountService;
-
+    private readonly IAccountService _accService = accService;
+    private readonly IMicroserviceAuthService _mAuthService = mAuthService;
 
     /// <summary>
     /// Запросить регистрацию по данному Email.
@@ -26,7 +26,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.Register(model.Email ?? "");
+        var result = _accService.Register(model.Email ?? "");
 
         return StatusCode(result.Code, result.Payload);
     }   
@@ -44,7 +44,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.ValidateRegCode(model);
+        var result = _accService.ValidateRegCode(model);
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -62,7 +62,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.FinishRegistration(model);
+        var result = _accService.FinishRegistration(model);
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -79,7 +79,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.RequestPasswordReset(model.Email ?? "");
+        var result = _accService.RequestPasswordReset(model.Email ?? "");
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -96,7 +96,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.ResetPassword(model);
+        var result = _accService.ResetPassword(model);
 
         return new StatusCodeResult(501);
     }
@@ -114,7 +114,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.Login(model.Username ?? "", model.Password ?? "");
+        var result = _accService.Login(model.Username ?? "", model.Password ?? "");
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -134,7 +134,7 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.ChangePassword(model, User);
+        var result = _accService.ChangePassword(model, User);
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -153,7 +153,28 @@ public class AuthController(IAccountService accountService) : ControllerBase {
         {
             return BadRequest(ModelState);
         }
-        var result = _accservice.RefreshToken(User);
+        var result = _accService.RefreshToken(User);
+
+        return StatusCode(result.Code, result.Payload);
+    }
+
+    /// <summary>
+    /// Запросить токен сервиса.
+    /// </summary>
+    /// <remarks>
+    /// Используется для микросервисной аутентификации.
+    /// </remarks>
+    /// <response code="200">Успешно</response>
+    [Route("serviceToken")]
+    [HttpPost]
+    [ProducesResponseType(typeof(ServiceTokenResponse), (int)HttpStatusCode.OK)]
+    public IActionResult ServiceToken(RequestServiceTokenRequest model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var result = _mAuthService.ServiceToken(model);
 
         return StatusCode(result.Code, result.Payload);
     }

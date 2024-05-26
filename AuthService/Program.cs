@@ -29,6 +29,7 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 // Services
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IRegistrationCodeRepository, RegistrationCodeRepository>();
+builder.Services.AddTransient<IRevokedPasswordRepository, RevokedPasswordRepository>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IMicroserviceAuthService, MicroserviceAuthService>();
