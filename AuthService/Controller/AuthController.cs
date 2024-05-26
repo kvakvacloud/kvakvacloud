@@ -79,7 +79,7 @@ public class AuthController(IAccountService accService, IMicroserviceAuthService
         {
             return BadRequest(ModelState);
         }
-        var result = _accService.RequestPasswordReset(model.Email ?? "");
+        var result = _accService.RequestPasswordReset(model.Email);
 
         return StatusCode(result.Code, result.Payload);
     }
@@ -98,7 +98,7 @@ public class AuthController(IAccountService accService, IMicroserviceAuthService
         }
         var result = _accService.ResetPassword(model);
 
-        return new StatusCodeResult(501);
+        return StatusCode(result.Code, result.Payload);
     }
 
     /// <summary>
