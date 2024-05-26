@@ -55,7 +55,13 @@
             </summary>
             <response code="200">Получены токены</response>
         </member>
-        <member name="M:AuthService.Controllers.ServiceAuthController.ServiceToken(AuthService.Models.Requests.RequestServiceTokenRequest)">
+        <member name="M:AuthService.Controllers.AuthController.ValidateToken">
+            <summary>
+            Валидация токена
+            </summary>
+            <response code="200">Получены токены</response>
+        </member>
+        <member name="M:AuthService.Controllers.AuthController.ServiceToken(AuthService.Models.Requests.RequestServiceTokenRequest)">
             <summary>
             Запросить токен сервиса.
             </summary>

@@ -15,8 +15,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
     private readonly string _audience = Environment.GetEnvironmentVariable("AUTH_JWT_AUDIENCE") ?? "kvakvacloud";
 
     public string GenerateAccessToken(User user)
-    {
-        
+    {  
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Convert.FromBase64String(_secretKey);
         var tokenDescriptor = new SecurityTokenDescriptor
