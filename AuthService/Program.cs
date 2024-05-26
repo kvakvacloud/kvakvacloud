@@ -86,13 +86,12 @@ builder.Services.AddSwaggerGen(c =>
         },
     });
 
-    // Add JWT Bearer authentication
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme",
+        Description = "Аутентификация при помощи токена типа Access, Refresh или Microservice.",
         Name = "Authorization",
         In = ParameterLocation.Header,
-        BearerFormat = "JWT",
+        BearerFormat = "<type> <token>",
         Type = SecuritySchemeType.ApiKey
     });
 
