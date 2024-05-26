@@ -48,25 +48,25 @@ builder.Services.AddAuthorizationBuilder()
         policy.RequireClaim(ClaimTypes.AuthenticationMethod, "Microservice");
     });
 builder.Services.AddAuthentication("JwtScheme")
-.AddScheme<AuthenticationSchemeOptions, JwtAuthenticationHandler>("JwtScheme", options => {})
+.AddScheme<AuthenticationSchemeOptions, JwtAuthenticationHandler>("JwtScheme", options => {});
 
-    .AddJwtBearer(options =>
-    {
-        string issuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? "kvakvacloud";
-        string audience = Environment.GetEnvironmentVariable("AUTH_JWT_AUDIENCE") ?? "kvakvacloud";
-        string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? "";
+    // .AddJwtBearer(options =>
+    // {
+    //     string issuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? "kvakvacloud";
+    //     string audience = Environment.GetEnvironmentVariable("AUTH_JWT_AUDIENCE") ?? "kvakvacloud";
+    //     string secret = Environment.GetEnvironmentVariable("AUTH_JWT_SECRET") ?? "";
 
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = issuer,
-            ValidateAudience = true,
-            ValidAudience = audience,
-            ValidateLifetime = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-            ValidateIssuerSigningKey = true
-        };
-    });
+    //     options.TokenValidationParameters = new TokenValidationParameters
+    //     {
+    //         ValidateIssuer = true,
+    //         ValidIssuer = issuer,
+    //         ValidateAudience = true,
+    //         ValidAudience = audience,
+    //         ValidateLifetime = true,
+    //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+    //         ValidateIssuerSigningKey = true
+    //     };
+    // });
 
 builder.Services.AddControllers();
 

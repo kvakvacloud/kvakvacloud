@@ -21,6 +21,8 @@ public class JwtService(IUserRepository userRepo) : IJwtService
         var key = Convert.FromBase64String(_secretKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Issuer = _issuer,
+            Audience = _audience,
             Subject = new ClaimsIdentity(new[]
             { 
                 new Claim("Type", "access"),
@@ -94,13 +96,15 @@ public class JwtService(IUserRepository userRepo) : IJwtService
                 return false;
             }
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(_secretKey);
+            var key = Convert.FromBase64String(_secretKey);
     
             TokenValidationParameters validationParameters = new() {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = true,
+                ValidIssuer = _issuer,
                 ValidateAudience = true,
+                ValidAudience = _audience,
                 ClockSkew = TimeSpan.Zero
             };
     
@@ -112,7 +116,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             var passwordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
             // Проверка типа токена
-            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "active")
+            if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "access")
             {
                 return false;
             }
@@ -136,13 +140,15 @@ public class JwtService(IUserRepository userRepo) : IJwtService
                 return false;
             }
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(_secretKey);
+            var key = Convert.FromBase64String(_secretKey);
     
             TokenValidationParameters validationParameters = new() {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = true,
+                ValidIssuer = _issuer,
                 ValidateAudience = true,
+                ValidAudience = _audience,
                 ClockSkew = TimeSpan.Zero
             };
     
@@ -161,7 +167,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             }
 
             // Проверка, что дата изменения пароля совпадает с фактической
-            if ((_userRepo.GetUserByUsername(username) ?? new User()).PasswordChangeDate != passwordChangeDate)
+            if ((_userRepo.GetUserByUsername(username)!).PasswordChangeDate > passwordChangeDate)
             {
                 username=null;
                 return false;
@@ -186,13 +192,15 @@ public class JwtService(IUserRepository userRepo) : IJwtService
                 return false;
             }
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.ASCII.GetBytes(_secretKey);
+            var key = Convert.FromBase64String(_secretKey);
     
             TokenValidationParameters validationParameters = new() {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = true,
+                ValidIssuer = _issuer,
                 ValidateAudience = true,
+                ValidAudience = _audience,
                 ClockSkew = TimeSpan.Zero
             };
     

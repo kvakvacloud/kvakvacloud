@@ -25,7 +25,7 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
         try
         {
             // Extract the token from the request headers or query parameters
-            string? token = Request.Headers["Authorization"];
+            string? token = Request.Headers.Authorization;
     
             if (token == null)
             {
@@ -33,10 +33,10 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
             }
     
             // Validate the token based on its type
-            if (token.StartsWith("Bearer "))
+            if (token.StartsWith("Access "))
             {
                 // Access token verification
-                string accessToken = token.Substring("Bearer ".Length);
+                string accessToken = token["Access ".Length..];
                 if (_jwtService.ValidateAccessToken(accessToken, out string? username))
                 {
                     // Create a ClaimsIdentity with the user information
@@ -51,7 +51,7 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
             else if (token.StartsWith("Refresh "))
             {
                 // Refresh token verification
-                string refreshToken = token.Substring("Refresh ".Length);
+                string refreshToken = token["Refresh ".Length..];
                 if (_jwtService.ValidateRefreshToken(refreshToken, out string? username))
                 {
                     // Create a ClaimsIdentity with the user information
@@ -66,7 +66,7 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
             else if (token.StartsWith("Microservice "))
             {
                 // Refresh token verification
-                string refreshToken = token.Substring("Microservice ".Length);
+                string refreshToken = token["Microservice ".Length..];
                 if (_jwtService.ValidateMicroserviceToken(refreshToken, out string? microservice))
                 {
                     // Create a ClaimsIdentity with the user information
