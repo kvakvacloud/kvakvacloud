@@ -5,22 +5,16 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
 namespace AuthService.Authentication;
-public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public class JwtAuthenticationHandler(
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
+    ILoggerFactory logger,
+    UrlEncoder encoder,
+    IJwtService jwtService) : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    private readonly IJwtService _jwtService;
+    private readonly IJwtService _jwtService = jwtService;
 
-    public JwtAuthenticationHandler(
-        IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock,
-        IJwtService jwtService)
-        : base(options, logger, encoder, clock)
-    {
-        _jwtService = jwtService;
-    }
-
-    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+    protected override async Task<AuthenticateResult> HandleAu
+    thenticateAsync()
     {
         try
         {
@@ -40,7 +34,12 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
                 if (_jwtService.ValidateAccessToken(accessToken, out string? username))
                 {
                     // Create a ClaimsIdentity with the user information
-                    var claims = new[] { new Claim(ClaimTypes.Name, username!) };
+                    var claims = new[] 
+                    {
+                        new Claim(ClaimTypes.Name, username!),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType,"User"),
+                        new Claim(ClaimTypes.AuthenticationMethod, "Access")
+                    };
                     var identity = new ClaimsIdentity(claims, Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
                     var ticket = new AuthenticationTicket(principal, Scheme.Name);
@@ -55,7 +54,12 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
                 if (_jwtService.ValidateRefreshToken(refreshToken, out string? username))
                 {
                     // Create a ClaimsIdentity with the user information
-                    var claims = new[] { new Claim(ClaimTypes.Name, username!) };
+                    var claims = new[] 
+                    {
+                        new Claim(ClaimTypes.Name, username!),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType,"User"),
+                        new Claim(ClaimTypes.AuthenticationMethod, "Refresh")
+                    };
                     var identity = new ClaimsIdentity(claims, Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
                     var ticket = new AuthenticationTicket(principal, Scheme.Name);
@@ -70,7 +74,12 @@ public class JwtAuthenticationHandler : AuthenticationHandler<AuthenticationSche
                 if (_jwtService.ValidateMicroserviceToken(refreshToken, out string? microservice))
                 {
                     // Create a ClaimsIdentity with the user information
-                    var claims = new[] { new Claim(ClaimTypes.Name, microservice!) };
+                    var claims = new[] 
+                    {
+                        new Claim(ClaimTypes.Name, microservice!),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType,"Admin"),
+                        new Claim(ClaimTypes.AuthenticationMethod, "Microservice")
+                    };
                     var identity = new ClaimsIdentity(claims, Scheme.Name);
                     var principal = new ClaimsPrincipal(identity);
                     var ticket = new AuthenticationTicket(principal, Scheme.Name);

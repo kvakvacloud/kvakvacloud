@@ -113,7 +113,6 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
             username = validatedJwt.Claims.First(claim => claim.Type == "Username").Value;
-            var passwordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
 
             // Проверка типа токена
             if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "access")
@@ -157,7 +156,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             JwtSecurityToken validatedJwt = (JwtSecurityToken)validatedToken;
 
             username = validatedJwt.Claims.First(claim => claim.Type == "Username").Value;
-            var passwordChangeDate = DateTime.Parse(validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value);
+            var passwordChangeDate = validatedJwt.Claims.First(claim => claim.Type == "PasswordChangeDate").Value;
 
             // Проверка типа токена
             if (validatedJwt.Claims.First(claim => claim.Type == "Type").Value != "refresh")
@@ -167,7 +166,7 @@ public class JwtService(IUserRepository userRepo) : IJwtService
             }
 
             // Проверка, что дата изменения пароля совпадает с фактической
-            if ((_userRepo.GetUserByUsername(username)!).PasswordChangeDate > passwordChangeDate)
+            if (_userRepo.GetUserByUsername(username)!.PasswordChangeDate.ToString() != passwordChangeDate)
             {
                 username=null;
                 return false;

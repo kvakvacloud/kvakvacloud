@@ -47,8 +47,11 @@ builder.Services.AddAuthorizationBuilder()
     {
         policy.RequireClaim(ClaimTypes.AuthenticationMethod, "Microservice");
     });
-builder.Services.AddAuthentication("JwtScheme")
-.AddScheme<AuthenticationSchemeOptions, JwtAuthenticationHandler>("JwtScheme", options => {});
+builder.Services.AddAuthentication("default")
+.AddScheme<AuthenticationSchemeOptions, JwtAuthenticationHandler>("default", options => 
+{
+    Console.WriteLine(options.ToString());
+});
 
     // .AddJwtBearer(options =>
     // {
@@ -119,8 +122,8 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-app.UseRouting();
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
 

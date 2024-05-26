@@ -165,8 +165,8 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
         }
         TokensResponse tokens = new() 
         {
-            RefreshToken = _jwtService.GenerateAccessToken(user),
-            AccessToken = _jwtService.GenerateRefreshToken(user)
+            RefreshToken = _jwtService.GenerateRefreshToken(user),
+            AccessToken = _jwtService.GenerateAccessToken(user)
         };
 
         return new ApiResponse {Code=200, Payload=tokens};
