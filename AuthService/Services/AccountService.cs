@@ -177,12 +177,12 @@ public class AccountService(IUserRepository userRepo, IRegistrationCodeRepositor
 
     public ApiResponse RequestPasswordReset(string email)
     {
-        return new ApiResponse{Code=501}; //todo
+        throw new NotImplementedException();
     }
 
     public ApiResponse ResetPassword(AccountPasswordResetRequest model)
     {  
-        return new ApiResponse{Code=501}; //todo
+        throw new NotImplementedException();
     }
 
     public ApiResponse RefreshToken(ClaimsPrincipal userClaims)
