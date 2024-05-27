@@ -6,7 +6,7 @@ namespace UserDataService.Models.Profile.Requests;
 public class UpdateProfileRequest
 {
     [FromQuery]
-    public string? ToUsername {get;set;}
+    public string? ForUsername {get;set;}
     private string? _firstName;
     private string? _lastName;
     private string? _about;

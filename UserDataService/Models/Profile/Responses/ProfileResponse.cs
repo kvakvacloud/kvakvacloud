@@ -8,4 +8,5 @@ public class ProfileResponse
     public string? About {get;set;}
     public string? Phone {get;set;}
     public string? Picture {get;set;}
+    public bool IsPrivate {get;set;}
 }
