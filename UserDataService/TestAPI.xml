@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UserDataService</name>
+    </assembly>
+    <members>
+        <member name="M:UserDataService.Controllers.NotificationController.GetAll(UserDataService.Models.Notifications.Requests.GetNotificationsRequest)">
+            <summary>
+            Получить список уведомлений.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+            <response code="404"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.NotificationController.Read(UserDataService.Models.Notifications.Requests.MarkNotificationAsReadRequest)">
+            <summary>
+            Отметить уведомление как прочитанное.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.NotificationController.Delete(UserDataService.Models.Notifications.Requests.DeleteNotificationRequest)">
+            <summary>
+            Удалить уведомление.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.NotificationController.ClearAll(UserDataService.Models.Notifications.Requests.ClearNotificationsRequest)">
+            <summary>
+            Очистить все уведомления.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.PrivacyController.GetSettings(UserDataService.Models.Privacy.Requests.GetPrivacySettingsRequest)">
+            <summary>
+            Получить настройки приватности пользователя.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+            <response code="404"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.PrivacyController.UpdateSettings(UserDataService.Models.Privacy.Requests.UpdatePrivacySettingsRequest)">
+            <summary>
+            Изменить настройки приватности пользователя.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.ProfileController.GetProfile(UserDataService.Models.Profile.Requests.GetProfileRequest)">
+            <summary>
+            Получить профиль пользователя.
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+            <response code="404"></response>
+        </member>
+        <member name="M:UserDataService.Controllers.ProfileController.UpdateProfile(UserDataService.Models.Profile.Requests.UpdateProfileRequest)">
+            <summary>
+            Изменить данные профиля
+            </summary>
+            <response code="200"></response>
+            <response code="403"></response>
+        </member>
+    </members>
+</doc>
