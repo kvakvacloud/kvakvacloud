@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using UserData.Authentication;
+using UserDataService.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,8 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 });
 
 // Services
-
+builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddTransient<IPrivacySettingsRepository, PrivacySettingsRepository>();
 
 // Authorization
 builder.Services.AddAuthorizationBuilder()

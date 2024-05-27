@@ -5,6 +5,7 @@ namespace UserDataService.Database;
 public class ApplicationContext : DbContext
 {
     public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<PrivacySettings> PrivacySettings {get;set;}
 
     #pragma warning disable CS8618
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
