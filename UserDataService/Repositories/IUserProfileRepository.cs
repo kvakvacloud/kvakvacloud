@@ -4,11 +4,11 @@ namespace UserDataService.Repositories;
 
 public interface IUserProfileRepository
 {
-    public bool AddUserProfile(UserProfile obj);
-    public bool UpdateUserProfile(UserProfile obj);
-    public bool DeleteUserProfile(UserProfile obj);
-    public UserProfile? GetUserProfileById(long id);
-    public UserProfile? GetUserProfileByUsername(string username);
-    public IQueryable<UserProfile> GetUserProfiles();
+    public bool AddUserProfile(Profile obj);
+    public bool UpdateUserProfile(Profile obj);
+    public bool DeleteUserProfile(Profile obj);
+    public Profile? GetUserProfileById(long id);
+    public Profile? GetUserProfileByUsername(string username);
+    public IQueryable<Profile> GetUserProfiles();
     public bool Save();
 }

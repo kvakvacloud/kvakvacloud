@@ -7,6 +7,8 @@ public class Notification
 {
     [Key]
     public long Id {get;set;}
+    [Required]
+    public string Username {get;set;} = null!;
     public string? Subject {get;set;}
     [Required]
     public string Body {get;set;} = null!;

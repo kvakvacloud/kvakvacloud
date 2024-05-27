@@ -24,6 +24,7 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 // Services
 builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddTransient<IPrivacySettingsRepository, PrivacySettingsRepository>();
+builder.Services.AddTransient<INotificationsRepository, NotificationsRepository>();
 
 // Authorization
 builder.Services.AddAuthorizationBuilder()

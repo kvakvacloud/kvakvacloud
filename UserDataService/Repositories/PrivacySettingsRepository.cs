@@ -24,7 +24,7 @@ public class PrivacySettingsRepository(ApplicationContext db) : IPrivacySettings
         return _db.PrivacySettings;
     }
 
-    public PrivacySettings? GetUserProfileByUsername(string username)
+    public PrivacySettings? GetUserPrivacySettingsByUsername(string username)
     {
         return _db.PrivacySettings.FirstOrDefault(o => o.Username == username);
     }

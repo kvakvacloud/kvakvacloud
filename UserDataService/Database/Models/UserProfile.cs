@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace UserDataService.Database.Models;
 
 [Index(nameof(Username), IsUnique = true)]
-public class UserProfile {
+public class Profile {
     private string? _firstName;
     private string? _lastName;
     private string? _about;
