@@ -12,6 +12,12 @@ public class NotificationsRepository(ApplicationContext db) : INotificationsRepo
         return Save();
     }
 
+    public bool DeleteAllForUsername(string username)
+    {
+        _db.Notifications.RemoveRange(_db.Notifications.Where(o => o.Username == username));
+        return Save();
+    }
+
     public bool DeleteNotification(Notification obj)
     {
         _db.Notifications.Remove(obj);

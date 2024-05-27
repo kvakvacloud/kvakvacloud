@@ -7,6 +7,7 @@ public interface INotificationsRepository
     public bool AddNotification(Notification obj);
     public bool UpdateNotification(Notification obj);
     public bool DeleteNotification(Notification obj);
+    public bool DeleteAllForUsername(string username);
     public Notification? GetNotificationById(long id);
     public IQueryable<Notification> GetNotificationsByUsername(string username);
     public bool Save();

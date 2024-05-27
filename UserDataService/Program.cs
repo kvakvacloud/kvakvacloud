@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using UserData.Authentication;
 using UserDataService.Repositories;
+using UserDataService.Services.Notifications;
+using UserDataService.Services.Privacy;
+using UserDataService.Services.Profile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,9 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddTransient<IPrivacySettingsRepository, PrivacySettingsRepository>();
 builder.Services.AddTransient<INotificationsRepository, NotificationsRepository>();
+builder.Services.AddTransient<INotificationsService, NotificationsService>();
+builder.Services.AddTransient<IPrivacyService, PrivacyService>();
+builder.Services.AddTransient<IProfileService, ProfileService>();
 
 // Authorization
 builder.Services.AddAuthorizationBuilder()
