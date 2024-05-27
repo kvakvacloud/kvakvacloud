@@ -1,14 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace UserDataService.Models.Requests;
+namespace UserDataService.Models.Profile.Requests;
 
-public class UserDataUpdateProfileRequest
+public class UpdateProfileRequest
 {
     [FromQuery]
     public string? ToUsername {get;set;}
-    [FromQuery]
-    public long? ToUserId {get;set;}
     private string? _firstName;
     private string? _lastName;
     private string? _about;

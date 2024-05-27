@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UserDataService.Models.Profile.Requests;
+using UserDataService.Models.Privacy.Requests;
 
 namespace UserDataService.Controllers;
 
 [ApiController]
 [Route("UserData/[controller]")]
-public class ProfileController(): ControllerBase
+public class PrivacyController(): ControllerBase
 {
     /// <summary>
-    /// Получить профиль пользователя.
+    /// Получить настройки приватности пользователя.
     /// </summary>
     /// <response code="200"></response>
     /// <response code="403"></response>
@@ -17,20 +17,20 @@ public class ProfileController(): ControllerBase
     [Route("get")]
     [HttpGet]
     [Authorize(Roles = "User", Policy = "Access")]
-    public IActionResult GetProfile([FromQuery] GetProfileRequest model)
+    public IActionResult GetSettings(GetPrivacySettingsRequest model)
     {
         throw new NotImplementedException();
     }
 
     /// <summary>
-    /// Изменить данные профиля
+    /// Изменить настройки приватности пользователя.
     /// </summary>
     /// <response code="200"></response>
     /// <response code="403"></response>
     [Route("update")]
     [HttpPatch]
     [Authorize(Roles = "User", Policy = "Access")]
-    public IActionResult UpdateProfile([FromQuery] UpdateProfileRequest model)
+    public IActionResult UpdateSettings(UpdatePrivacySettingsRequest model)
     {
         throw new NotImplementedException();
     }
