@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FilesystemService.Enums.Files;
 
 namespace FilesystemService.Models.Files.Requests;
 

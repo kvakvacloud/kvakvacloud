@@ -57,6 +57,10 @@ public class FileController() : ControllerBase
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Получить информацию о файлах пользователя.
+    /// </summary>
+    /// <response code="200"></response>
     [Route("info")]
     [HttpGet]
     [Authorize(Roles = "User", Policy = "Access")]
@@ -65,6 +69,10 @@ public class FileController() : ControllerBase
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Скачать файлы.
+    /// </summary>
+    /// <response code="200"></response>
     [Route("download")]
     [HttpGet]
     [Authorize(Roles = "User", Policy = "Access")]
