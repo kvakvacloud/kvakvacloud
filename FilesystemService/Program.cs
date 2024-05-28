@@ -1,8 +1,5 @@
-using System.Security.Claims;
-using FilesystemService.Authentication;
 using FilesystemService.Database;
-
-using Microsoft.AspNetCore.Authentication;
+using FilesystemService.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -21,6 +18,8 @@ builder.Services.AddDbContext<ApplicationContext>(x => {
 });
 
 // Services
+builder.Services.AddTransient<ISharedFileRepository, SharedFileRepository>();
+builder.Services.AddTransient<ISharedDirectoryRepository, SharedDirectoryRepository>();
 
 // Authorization
 // builder.Services.AddAuthorizationBuilder()

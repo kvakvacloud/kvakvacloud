@@ -6,8 +6,8 @@ namespace FilesystemService.Database;
 public class ApplicationContext : DbContext
 {
     #pragma warning disable CS8618
-    public DbSet<Models.FileShare> FileShares { get; set; }
-    public DbSet<DirectoryShare> DirectoryShares { get; set; }
+    public DbSet<Models.SharedFile> SharedFiles { get; set; }
+    public DbSet<SharedDirectory> SharedDirectories { get; set; }
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
         Database.EnsureCreated();

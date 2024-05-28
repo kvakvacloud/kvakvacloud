@@ -3,7 +3,7 @@ using FilesystemService.Enums.Sharing;
 
 namespace FilesystemService.Database.Models;
 
-public class DirectoryShare
+public class SharedFile
 {
     [Key]
     public long Id { get; set; }
