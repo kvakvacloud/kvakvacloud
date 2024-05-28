@@ -1,4 +1,4 @@
-namespace FilesystemService.Models.Files.Requests;
+namespace FilesystemService.Enums.Files;
 
 public enum UpdateMethod
 {
